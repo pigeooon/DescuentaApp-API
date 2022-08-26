@@ -1,6 +1,6 @@
 import puppeteer, { Browser, Page } from "puppeteer";
 import { DiscountsRepository } from "../types/discounts_repository.type";
-import { Discount } from "../types/discount";
+import { Discount } from "../types/discount.type";
 
 export class Scraper {
     constructor(private readonly discountsRepository: DiscountsRepository) {
@@ -10,9 +10,9 @@ export class Scraper {
         return this.discountsRepository;
     }
 
-    async scrap() {
-        const browser = await puppeteer.launch();
-        const page = await browser.newPage();
+    async scrap(): Promise<string> {
+        const browser: Browser = await puppeteer.launch();
+        const page: Page = await browser.newPage();
 
         await page.goto(this.discountsRepository.url, {
             waitUntil:["load", "domcontentloaded", "networkidle0", "networkidle2"]
@@ -30,7 +30,7 @@ export class Scraper {
                 name: discounts_name_vector[index],
                 img: discounts_img_vector[index],
                 description: discounts_description_vector[index],
-                details_url: '#',
+                details_url: '#', // no todos los casos tienen url, algunos tienen la descripción en js
             });
 
         });
@@ -38,6 +38,6 @@ export class Scraper {
         await browser.close();
     
         const json = JSON.stringify(discountsArray);
-        console.log(json);
+        return json;
     }
 }

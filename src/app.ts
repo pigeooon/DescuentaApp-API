@@ -10,4 +10,7 @@ const discountRepository: DiscountsRepository = {
 };
 
 const scraper = new Scraper(discountRepository);
-scraper.scrap();
+
+scraper.scrap().then((data) => {
+    console.log(data);
+});
