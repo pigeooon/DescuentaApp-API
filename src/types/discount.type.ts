@@ -1,4 +1,5 @@
 export type Discount = {
+    bank: string;
     name: string;
     img: string | null;
     description: string;
