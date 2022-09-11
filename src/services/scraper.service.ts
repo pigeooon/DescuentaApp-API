@@ -2,35 +2,31 @@ import puppeteer, { Browser, Page } from "puppeteer";
 import { Bank } from "../types/bank.type";
 import { Discount } from "../types/discount.type";
 
-export class Scraper {
-    constructor(private readonly bank: Bank) {
+export class ScraperService {
+    constructor() {
     }
 
-    get getBank(): Bank {
-        return this.bank;
-    }
-
-    async scrap(): Promise<string> {
+    async scrap(bank: Bank): Promise<Discount[]> {
         const browser: Browser = await puppeteer.launch();
         const page: Page = await browser.newPage();
 
-        await page.goto(this.bank.url, {
+        await page.goto(bank.url, {
             waitUntil:["load", "domcontentloaded", "networkidle0", "networkidle2"]
         });
     
         //falta manejar cuando $$eval no encuentra el item (retorna una promesa)
-        const discounts_name_vector = await page.$$eval(this.bank.discount_name_selector, item => item.map((item) => item.innerHTML));
-        const discounts_img_vector = await page.$$eval(this.bank.discount_img_selector, item => item.map((item) => item.getAttribute('src')));
-        const discounts_description_vector = await page.$$eval(this.bank.discount_description_selector, item => item.map((item) => item.innerHTML));
-        const discounts_details_url_vector = await page.$$eval(this.bank.discount_details_url_selector, item => item.map((item) => item.innerHTML));
+        const discounts_name_vector = await page.$$eval(bank.discount_name_selector, item => item.map((item) => item.innerHTML));
+        const discounts_img_vector = await page.$$eval(bank.discount_img_selector, item => item.map((item) => item.getAttribute('src')));
+        const discounts_description_vector = await page.$$eval(bank.discount_description_selector, item => item.map((item) => item.innerHTML));
+        const discounts_details_url_vector = await page.$$eval(bank.discount_details_url_selector, item => item.map((item) => item.innerHTML));
 
-        console.log(discounts_name_vector);
+        await browser.close();
 
         const discountsArray: Discount[] = [];
         
         discounts_name_vector.map((_value, index) => {
             discountsArray.push({
-                bank: this.bank.name,
+                bank: bank.name,
                 name: discounts_name_vector[index],
                 img: discounts_img_vector[index],
                 description: discounts_description_vector[index],
@@ -38,10 +34,6 @@ export class Scraper {
             });
 
         });
-
-        await browser.close();
-    
-        const json = JSON.stringify(discountsArray);
-        return json;
+        return discountsArray;
     }
 }
