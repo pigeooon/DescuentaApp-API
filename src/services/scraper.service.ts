@@ -28,7 +28,7 @@ export class ScraperService {
             discountsArray.push({
                 bank: bank.name,
                 name: discounts_name_vector[index],
-                img: discounts_img_vector[index],
+                img: bank.img_source_url + discounts_img_vector[index],
                 description: discounts_description_vector[index],
                 details_url: '#', // no todos los casos tienen url, algunos tienen el detalle en js
             });
