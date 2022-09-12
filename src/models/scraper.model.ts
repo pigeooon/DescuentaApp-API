@@ -1,32 +1,38 @@
 import { ScraperService } from "../services/scraper.service";
+import { DiscountService } from "../services/discount.service";
 import { Bank } from "../types/bank.type";
-import { Discount } from "../types/discount.type";
 
 export class Scraper {
     private scraperService: ScraperService;
-    private discounts: Discount[];
+    private discountService: DiscountService;
 
     constructor(private readonly banks: Bank[]) {
         this.scraperService = new ScraperService(); 
-        this.discounts = [];
-    }
-
-    get getDiscounts() {
-       return this.discounts; 
+        this.discountService = new DiscountService();
     }
 
     public async scrap() {
         this.banks.map((bank, _index) => {
-            console.log("🔧 Starting to scrape at " + bank.name + "...");
+            this.scrapingCall(bank);
+        });
+    }
 
-            this.scraperService.scrap(bank).then((scrapedDiscounts: Discount[]) => {
-                this.discounts.push(...scrapedDiscounts);
+    private scrapingCall(bank: Bank) {
+        console.log("🔧 Starting to scrape at " + bank.name + "...");
 
-                if(scrapedDiscounts.length)
-                    console.log("✅ " + scrapedDiscounts.length + " discounts scraped from " + bank.name + "!");
-                else
-                    console.log("❌ " + bank.name + "scraping failed.");
+        this.scraperService.scrap(bank).then((scrapedDiscounts) => {
+            scrapedDiscounts.map((discount, _index) => {
+                this.discountService.createDiscount(discount);
             });
+
+            if(scrapedDiscounts.length)
+                console.log("✅ " + scrapedDiscounts.length + " discounts scraped from " + bank.name + "!");
+            else
+                console.log("❔ no " + bank.name + " discounts found.");
+
+        }).catch((e) => {
+            console.log("❌ " + bank.name + " scraping failed.");
+            console.error(e);
         });
     }
 }
