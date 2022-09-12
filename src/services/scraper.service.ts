@@ -1,12 +1,12 @@
 import puppeteer, { Browser, Page } from "puppeteer";
 import { Bank } from "../types/bank.type";
-import { Discount } from "../types/discount.type";
+import { DiscountType } from "../types/discount.type";
 
 export class ScraperService {
     constructor() {
     }
 
-    async scrap(bank: Bank): Promise<Discount[]> {
+    async scrap(bank: Bank): Promise<DiscountType[]> {
         const browser: Browser = await puppeteer.launch();
         const page: Page = await browser.newPage();
 
@@ -22,7 +22,7 @@ export class ScraperService {
 
         await browser.close();
 
-        const discountsArray: Discount[] = [];
+        const discountsArray: DiscountType[] = [];
         
         discounts_name_vector.map((_value, index) => {
             discountsArray.push({
