@@ -1,17 +1,20 @@
-import { Discount } from "../types/discount.type";
+import { Discount } from "../models/discount.model";
+import { DiscountDocument, DiscountType } from "../types/discount.type";
 
 export class DiscountService {
 
     constructor() {
     }
 
-    public getDiscounts() {
+    public async getDiscounts() {
     }
 
     public getDiscountById() {
     }
 
-    public createDiscount(discount: Discount) {
+    public createDiscount(discount: DiscountType) {
+        const discount_ = new Discount(discount);
+        discount_.save();
     }
 
     public updateDiscount() {
