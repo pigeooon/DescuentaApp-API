@@ -1,12 +1,12 @@
 import { ScraperService } from "../services/scraper.service";
 import { DiscountService } from "../services/discount.service";
-import { Bank } from "../types/bank.type";
+import { BankType } from "../types/bank.type";
 
 export class Scraper {
     private scraperService: ScraperService;
     private discountService: DiscountService;
 
-    constructor(private readonly banks: Bank[]) {
+    constructor(private readonly banks: BankType[]) {
         this.scraperService = new ScraperService(); 
         this.discountService = new DiscountService();
     }
@@ -17,7 +17,7 @@ export class Scraper {
         });
     }
 
-    private scrapingCall(bank: Bank) {
+    private scrapingCall(bank: BankType) {
         console.log("🔧 Starting to scrape at " + bank.name + "...");
 
         this.scraperService.scrap(bank).then((scrapedDiscounts) => {

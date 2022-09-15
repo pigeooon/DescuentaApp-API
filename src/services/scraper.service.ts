@@ -1,12 +1,12 @@
 import puppeteer, { Browser, Page } from "puppeteer";
-import { Bank } from "../types/bank.type";
+import { BankType } from "../types/bank.type";
 import { DiscountType } from "../types/discount.type";
 
 export class ScraperService {
     constructor() {
     }
 
-    async scrap(bank: Bank): Promise<DiscountType[]> {
+    async scrap(bank: BankType): Promise<DiscountType[]> {
         const browser: Browser = await puppeteer.launch();
         const page: Page = await browser.newPage();
 
