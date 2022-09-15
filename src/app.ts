@@ -1,27 +1,41 @@
+import express, { Request, Response } from "express";
+import cors from "cors";
+import morgan from "morgan";
+import helmet from "helmet";
 import mongoose from "mongoose";
 import 'dotenv/config';
 
+//express
+const app = express();
+
+//settings
+app.set('port', process.env.PORT || 3000);
+
+//middlewares
+app.use(cors());
+app.use(helmet());
+app.use(morgan('dev'));
+app.use(express.json());
+app.use(express.urlencoded({extended: false}));
+
+//database
 mongoose.connect(String(process.env.DB_CONN_STRING)).then(
-    () => { console.log("✅ Connected successfully to MongoDB."); },
+    () => { console.log("✅ App successfully connected to MongoDB."); },
 ).catch((err) => {
     console.log("❌ MongoDB connection error.");
     console.error(err);
 });
 
-/*import { Scraper } from "./models/scraper.model";
-import { Bank } from "./types/bank.type";
+//api
+app.get('/', (req: Request, res: Response) => {
+    return res.status(200).json({ message: 'Hello world.' });
+});
 
-const banks: Bank[] = [
-    {
-        name: "Scotiabank",
-        url: "https://www.scotiaclub.cl/scclubfront/categoria/mundos/descuentos",
-        img_source_url: "https://www.scotiaclub.cl/",
-        discount_name_selector: "#row-descuentos > .descuento > .card > .card-body > .scotia-headline",
-        discount_img_selector: "#row-descuentos > .descuento > .card > img",
-        discount_description_selector: "#row-descuentos > .descuento > .card > .card-body > .mb-1",
-        discount_details_url_selector: "#row-descuentos > .descuento > .card > .card-body > .mb-1"
-    },
-];
+//deployment
+(async () => {
+    app.listen(app.get("port"), () => {
+        console.log("✅ App is running on port %d.", app.get("port"));
+    });
+})();
 
-const scraper = new Scraper(banks);
-scraper.scrap();*/
+export default app;
