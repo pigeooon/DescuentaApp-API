@@ -4,11 +4,9 @@ import { BankType } from "../types/bank.type";
 
 export class Scraper {
     private scraperService: ScraperService;
-    private discountService: DiscountService;
 
     constructor(private readonly banks: BankType[]) {
         this.scraperService = new ScraperService(); 
-        this.discountService = new DiscountService();
     }
 
     public async scrap() {
@@ -22,7 +20,7 @@ export class Scraper {
 
         this.scraperService.scrap(bank).then((scrapedDiscounts) => {
             scrapedDiscounts.map((discount, _index) => {
-                this.discountService.createDiscount(discount);
+                DiscountService.createDiscount(discount);
             });
 
             if(scrapedDiscounts.length)

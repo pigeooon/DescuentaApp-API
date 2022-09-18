@@ -6,20 +6,20 @@ export class DiscountService {
     constructor() {
     }
 
-    public async getDiscounts() {
+    public static async getDiscounts() {
+        const allDiscounts = await Discount.find().lean();
+        return allDiscounts;
     }
 
-    public getDiscountById() {
+    public static async getDiscountById(discountId: any) {
+        const singleDiscount = await Discount.findOne({_id: discountId}).lean();
+        return singleDiscount;
     }
 
-    public createDiscount(discount: DiscountType) {
-        const discount_ = new Discount(discount);
-        discount_.save();
-    }
+    public static async createDiscount(discountData: any) {
+        const newDiscount = discountData as DiscountType;
 
-    public updateDiscount() {
-    }
-
-    public deleteDiscount() {
+        const newDiscountResponse = await new Discount(newDiscount).save();
+        return newDiscountResponse;
     }
 }
