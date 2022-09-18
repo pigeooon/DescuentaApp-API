@@ -4,6 +4,7 @@ import morgan from "morgan";
 import helmet from "helmet";
 import mongoose from "mongoose";
 import 'dotenv/config';
+import router from './routes';
 
 //express
 const app = express();
@@ -30,6 +31,8 @@ mongoose.connect(String(process.env.DB_CONN_STRING)).then(
 app.get('/', (req: Request, res: Response) => {
     return res.status(200).json({ message: 'Hello world.' });
 });
+
+app.use('/', router);
 
 //deployment
 (async () => {
