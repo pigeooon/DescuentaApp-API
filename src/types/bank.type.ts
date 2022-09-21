@@ -8,6 +8,11 @@ export type BankType = {
     discount_img_selector: string;
     discount_description_selector: string;
     discount_details_url_selector: string;
+    discount_categories: 
+    {
+        category_name: string;
+        category_url: string;
+    }[];
 }
 
 export type BankDocument = mongoose.Document & { 
@@ -18,4 +23,9 @@ export type BankDocument = mongoose.Document & {
     discount_img_selector: string;
     discount_description_selector: string;
     discount_details_url_selector: string;
+    discount_categories: 
+    {
+        category_name: string;
+        category_url: string;
+    }[];
 }

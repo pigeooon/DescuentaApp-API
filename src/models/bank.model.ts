@@ -9,7 +9,13 @@ const bankSchema = new mongoose.Schema<BankDocument> (
         discount_name_selector: String,
         discount_img_selector: String,
         discount_description_selector: String,
-        discount_details_url_selector: String
+        discount_details_url_selector: String,
+        discount_categories: [
+            {
+                category_name: String,
+                category_url: String
+            }
+        ]
     }
 );
 
