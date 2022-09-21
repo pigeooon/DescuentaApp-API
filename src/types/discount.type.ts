@@ -4,8 +4,11 @@ export type DiscountType = {
     name: string;
     img: string | null;
     description: string;
-    details_url: string | null;
+    details_url?: string;
     bank: string;
+    category: string,
+    location?: string,
+    date?: string,
 };
 
 export type DiscountDocument = mongoose.Document & {
@@ -14,4 +17,7 @@ export type DiscountDocument = mongoose.Document & {
     description: string;
     details_url: string;
     bank: string;
+    category: string;
+    location: string;
+    date: string;
 };

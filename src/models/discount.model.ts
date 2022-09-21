@@ -7,7 +7,10 @@ const discountSchema = new mongoose.Schema<DiscountDocument> (
         img: String,
         description: String,
         details_url: String,
-        bank: String
+        bank: String,
+        category: String,
+        location: String,
+        date: String,
     }
 );
 

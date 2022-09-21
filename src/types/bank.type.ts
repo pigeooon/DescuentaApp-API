@@ -7,7 +7,9 @@ export type BankType = {
     discount_name_selector: string; 
     discount_img_selector: string;
     discount_description_selector: string;
-    discount_details_url_selector: string;
+    discount_details_url_selector?: string;
+    discount_location_selector?: string;
+    discount_date_selector?: string;
     discount_categories: 
     {
         category_name: string;
@@ -23,6 +25,8 @@ export type BankDocument = mongoose.Document & {
     discount_img_selector: string;
     discount_description_selector: string;
     discount_details_url_selector: string;
+    discount_location_selector: string;
+    discount_date_selector: string;
     discount_categories: 
     {
         category_name: string;
