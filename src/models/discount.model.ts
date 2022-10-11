@@ -4,7 +4,7 @@ import { DiscountDocument } from "../types/discount.type";
 const discountSchema = new mongoose.Schema<DiscountDocument> (
     {
         name: String,
-        img: String,
+        img_url: String,
         description: String,
         details_url: String,
         bank: String,
