@@ -29,7 +29,7 @@ mongoose.connect(String(process.env.DB_CONN_STRING)).then(
 
 //api
 app.get('/', (req: Request, res: Response) => {
-    return res.status(200).json({ message: 'Hello world.' });
+    return res.status(200).json({ message: 'Descuentapp API.' });
 });
 
 app.use('/', router);
