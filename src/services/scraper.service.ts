@@ -1,9 +1,20 @@
 import puppeteer, { Browser, Page } from "puppeteer";
+import { Bank } from "../models/bank.model";
+import { Scraper } from "../models/scraper.model";
 import { BankType } from "../types/bank.type";
 import { DiscountType } from "../types/discount.type";
+import { DiscountService } from "./discount.service";
 
 export class ScraperService {
     constructor() {
+    }
+
+    //borra los descuentos existentes y llama a los servicios de scraping
+    public static async launchScraping() {
+        await DiscountService.deleteDiscounts();
+        const banks = await Bank.find();
+        const scraper = new Scraper(banks);
+        scraper.scrap();
     }
 
     public async scrap(bank: BankType): Promise<DiscountType[]> {

@@ -22,4 +22,9 @@ export class DiscountService {
         const newDiscountResponse = await new Discount(newDiscount).save();
         return newDiscountResponse;
     }
+
+    public static async deleteDiscounts() {
+        console.log("🗑️  Deleting all discounts from database...");
+        return await Discount.deleteMany();
+    }
 }
