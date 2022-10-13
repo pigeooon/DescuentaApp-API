@@ -18,7 +18,6 @@ export class ScraperService {
         const discounts_name_vector = await this.scrapPlainText(page, bank.discount_name_selector);
         const discounts_img_vector = await this.scrapImgUrl(page, bank.discount_img_url_selector, bank.img_source_url);
         const discounts_description_vector = await this.scrapPlainText(page, bank.discount_description_selector);
-        const discounts_date_vector = await this.scrapPlainText(page, bank.discount_date_selector || " ");
 
         //cerramos la instancia del browser
         await browser.close();
@@ -32,7 +31,6 @@ export class ScraperService {
                 description: discounts_description_vector[index],
                 bank: bank.name,
                 category: ' ',
-                date: discounts_date_vector[index],
             });
 
         });
