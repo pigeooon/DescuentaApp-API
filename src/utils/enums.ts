@@ -1,4 +1,4 @@
-enum DiscountCategories {
+export enum DiscountCategories {
     ALIMENTOS = "Alimentos",
     APPS = "Apps",
     AUTOS = "Autos",
