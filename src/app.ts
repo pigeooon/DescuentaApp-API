@@ -12,6 +12,9 @@ const app = express();
 //settings
 app.set('port', process.env.PORT || 3000);
 
+//no listeners limit for app events
+process.setMaxListeners(0);
+
 //middlewares
 app.use(cors());
 app.use(helmet());
