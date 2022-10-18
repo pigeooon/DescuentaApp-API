@@ -1,7 +1,7 @@
 import puppeteer, { Browser, Page } from "puppeteer";
 import { Bank } from "../models/bank.model";
 import { Scraper } from "../models/scraper.model";
-import { BankType } from "../types/bank.type";
+import { BankType, BankCategoryType } from "../types/bank.type";
 import { DiscountType } from "../types/discount.type";
 import { DiscountService } from "./discount.service";
 
@@ -17,15 +17,17 @@ export class ScraperService {
         scraper.scrap();
     }
 
-    public async scrap(bank: BankType): Promise<DiscountType[]> {
+    public async scrap(bank: BankType, bankCategory: BankCategoryType): Promise<DiscountType[]> {
         const browser: Browser = await puppeteer.launch();
         const page: Page = await browser.newPage();
 
-        await page.goto(bank.url, {
-            waitUntil:["load", "domcontentloaded", "networkidle0", "networkidle2"]
-        });
-    
-        //llamadas a distintos métodos de selección
+        await page.goto(bank.url, { waitUntil:["load", "domcontentloaded", "networkidle0", "networkidle2"] });    
+        
+        let categorySelector = bankCategory.bank_category_selector.replace('$', bankCategory.bank_category_name);
+        await page.waitForSelector(categorySelector);
+        await page.click(categorySelector);
+
+        //llamadas a distintos métodos de selección de atributos
         const discounts_name_vector = await this.scrapPlainText(page, bank.discount_name_selector);
         const discounts_img_vector = await this.scrapImgUrl(page, bank.discount_img_url_selector, bank.img_source_url);
         const discounts_description_vector = await this.scrapPlainText(page, bank.discount_description_selector);
@@ -41,7 +43,7 @@ export class ScraperService {
                 img_url: discounts_img_vector[index],
                 description: discounts_description_vector[index],
                 bank: bank.name,
-                category: ' ',
+                category: bankCategory.category,
             });
 
         });
