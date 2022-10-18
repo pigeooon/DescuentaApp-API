@@ -10,11 +10,13 @@ export type BankType = {
     discount_details_selector?: string;
     discount_location_selector?: string;
     discount_date_selector?: string;
-    discount_categories: 
-    {
-        category_name: string;
-        category_url: string;
-    }[];
+    discount_categories: BankCategoryType[];
+}
+
+export type BankCategoryType = {
+    category: string;
+    bank_category_name: string;
+    bank_category_selector: string;
 }
 
 export type BankDocument = mongoose.Document & { 
@@ -27,9 +29,5 @@ export type BankDocument = mongoose.Document & {
     discount_details_selector: string;
     discount_location_selector: string;
     discount_date_selector: string;
-    discount_categories: 
-    {
-        category_name: string;
-        category_url: string;
-    }[];
+    discount_categories: BankCategoryType[];
 }

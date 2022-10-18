@@ -14,8 +14,9 @@ const bankSchema = new mongoose.Schema<BankDocument> (
         discount_date_selector: String,
         discount_categories: [
             {
-                category_name: String,
-                category_url: String
+                category: String,
+                bank_category_name: String,
+                bank_category_selector: String
             }
         ]
     }
