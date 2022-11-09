@@ -1,22 +1,10 @@
-import { Router } from "express";
-import DiscountController from "../controllers/discount.controller";
+import express from "express";
+import { discountController } from "../controllers/discount.controller";
 
-export default class DiscountRoutes {
-    private path = '/discounts';
-    private router = Router();
-    private discountController = new DiscountController();
+const router = express.Router();
+const prefix = "/discounts";
 
-    constructor() {
-        this.createRoutes();
-    }
+router.get(`${prefix}`, discountController.getDiscounts);
+router.get(`${prefix}/:id`, discountController.getDiscountById);
 
-    public getRouter(): Router {
-        return this.router;
-    }
-
-    private createRoutes() {
-        this.router.get(`${this.path}`, this.discountController.getDiscounts);
-
-        this.router.get(`${this.path}/:id`, this.discountController.getDiscountById);
-    }
-}
+export default router;

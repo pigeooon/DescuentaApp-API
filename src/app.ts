@@ -4,44 +4,33 @@ import morgan from "morgan";
 import helmet from "helmet";
 import mongoose from "mongoose";
 import 'dotenv/config';
-import router from './routes';
+import { AddressInfo } from "net"
+import { router } from './routes';
 
 //express
 const app = express();
-
-//settings
 app.set('port', process.env.PORT || 3000);
+app.use(cors());
+app.use(helmet());
+app.use(morgan('dev'));
+app.use(express.urlencoded({ extended: false, limit: "15mb" }))
+app.use(express.json({ limit: "15mb" }))
 
 //no listeners limit for app events
 process.setMaxListeners(0);
 
-//middlewares
-app.use(cors());
-app.use(helmet());
-app.use(morgan('dev'));
-app.use(express.json());
-app.use(express.urlencoded({extended: false}));
-
 //database
 mongoose.connect(String(process.env.DB_CONN_STRING)).then(
-    () => { console.log("✅ App successfully connected to MongoDB."); },
+    () => { console.log("✅ MongoDB successfully connected."); },
 ).catch((err) => {
-    console.log("❌ MongoDB connection error.");
-    console.error(err);
+    throw err;
 });
 
-//api
-app.get('/', (req: Request, res: Response) => {
-    return res.status(200).json({ message: 'Descuentapp API.' });
-});
-
+//routes
 app.use('/', router);
 
-//deployment
-(async () => {
-    app.listen(app.get("port"), () => {
-        console.log("✅ App is running on port %d.", app.get("port"));
-    });
-})();
-
-export default app;
+//server
+const server = app.listen(app.get("port"), "127.0.0.1", () => {
+    const { port, address } = server.address() as AddressInfo;
+    console.log("\n✅ DESCUENTA-APP API | Listening on:", "http://" + address + ":" + port + " |")
+})

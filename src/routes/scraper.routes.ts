@@ -1,20 +1,9 @@
-import { Router } from "express";
-import ScraperController from "../controllers/scraper.controller";
+import express from "express";
+import { scraperController } from "../controllers/scraper.controller";
 
-export default class ScraperRoutes {
-    private path = '/scraper';
-    private router = Router();
-    private scraperController = new ScraperController();
+const router = express.Router();
+const prefix = "/scraper"
 
-    constructor() {
-        this.createRoutes();
-    }
+router.get(`${prefix}/launch`, scraperController.launchScraping);
 
-    public getRouter(): Router {
-        return this.router;
-    }
-
-    private createRoutes() {
-        this.router.get(`${this.path}/launch`, this.scraperController.launchScraping);
-    }
-}
+export default router;

@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
 import { ScraperService } from "../services/scraper.service";
 
-export default class ScraperController {
+class ScraperController {
 
     constructor() {
     }
 
-    public launchScraping(req: Request, res: Response) {
+    launchScraping = async (req: Request, res: Response) => {
         ScraperService.launchScraping().then(() => {
             return res.status(204);
         })
@@ -15,3 +15,5 @@ export default class ScraperController {
         });
     }
 }
+
+export const scraperController = new ScraperController();

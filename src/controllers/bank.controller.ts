@@ -2,12 +2,12 @@ import { Request, Response } from "express";
 import { BankService } from "../services/bank.service";
 import { IBank } from "../interfaces/bank.interface";
 
-export default class BankController {
+class BankController {
 
     constructor() {
     }
 
-    public getBanks(req: Request, res: Response) {
+    getBanks = async (req: Request, res: Response) => {
         BankService.getBanks().then((data) => {
             if(!data || data === null) return res.status(404);
             return res.status(200).json(data);
@@ -17,7 +17,7 @@ export default class BankController {
         });
     }
 
-    public getBankById(req: Request, res: Response) {
+    getBankById = async (req: Request, res: Response) => {
         const bankId = req.params.id;
         
         BankService.getBankById(bankId).then((data) => {
@@ -29,7 +29,7 @@ export default class BankController {
         });
     }
 
-    public createBank(req: Request, res: Response) {
+    createBank = async (req: Request, res: Response) => {
         const bank = req.body as IBank;
         console.log(bank);
 
@@ -41,7 +41,7 @@ export default class BankController {
         });
     }
 
-    public updateBank(req: Request, res: Response) {
+    updateBank = async (req: Request, res: Response) => {
         const bankId = req.params.id;
         const bank = req.body as IBank;
 
@@ -53,7 +53,7 @@ export default class BankController {
         });
     }
 
-    public deleteBank(req: Request, res: Response) {
+    deleteBank = async (req: Request, res: Response) => {
         const bankId = req.params.id;
 
         BankService.deleteBank(bankId).then((data) => {
@@ -64,3 +64,5 @@ export default class BankController {
         });
     }
 }
+
+export const bankController = new BankController();

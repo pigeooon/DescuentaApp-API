@@ -1,28 +1,13 @@
-import { Router } from "express";
-import BankController from "../controllers/bank.controller";
+import express from "express";
+import { bankController } from "../controllers/bank.controller";
 
-export default class BankRoutes {
-    private path = '/banks';
-    private router = Router();
-    private bankController = new BankController();
+const router = express.Router();
+const prefix = "/banks"
 
-    constructor() {
-        this.createRoutes();
-    }
+router.get(`${prefix}`, bankController.getBanks);
+router.get(`${prefix}/:id`, bankController.getBankById);
+router.post(`${prefix}`, bankController.createBank);
+router.put(`${prefix}/:id`, bankController.updateBank);
+router.delete(`${prefix}/:id`, bankController.deleteBank);
 
-    public getRouter(): Router {
-        return this.router;
-    }
-
-    private createRoutes() {
-        this.router.get(`${this.path}`, this.bankController.getBanks);
-
-        this.router.get(`${this.path}/:id`, this.bankController.getBankById);
-
-        this.router.post(`${this.path}`, this.bankController.createBank);
-
-        this.router.put(`${this.path}/:id`, this.bankController.updateBank);
-
-        this.router.delete(`${this.path}/:id`, this.bankController.deleteBank);
-    }
-}
+export default router;

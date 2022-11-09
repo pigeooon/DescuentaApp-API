@@ -1,12 +1,14 @@
 import { Request, Response } from "express";
 import { DiscountService } from "../services/discount.service";
 
-export default class DiscountController {
+class DiscountController {
 
     constructor() {
     }
 
-    public getDiscounts(req: Request, res: Response) {
+    getDiscounts = async (req: Request, res: Response) => {
+        console.log("buenas :D");
+        
         DiscountService.getDiscounts().then((data) => {
             if(!data || data === null) return res.status(404);
             return res.status(200).json(data);
@@ -16,7 +18,7 @@ export default class DiscountController {
         });
     }
 
-    public getDiscountById(req: Request, res: Response) {
+    getDiscountById = async (req: Request, res: Response) => {
         const discountId = req.params.id;
         
         DiscountService.getDiscountById(discountId).then((data) => {
@@ -28,3 +30,5 @@ export default class DiscountController {
         });
     }
 }
+
+export const discountController = new DiscountController();
