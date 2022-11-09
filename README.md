@@ -6,6 +6,15 @@ Credenciales:
 "password": "$password"
 
 ## Endpoints
+### Auth
+```
+POST api/auth/login
+POST api/auth/signup
+GET api/auth/session
+```
+
+El token es solicitado en `req.headers.authorization` en la API, por ende debe enviarse en `Authorization` como `bearer-token`.
+
 ### Discounts
 ```
 GET api/discounts/
