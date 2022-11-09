@@ -7,13 +7,14 @@ export const authMiddleware = (req: any, res: any, next: any) => {
     const authHeader = req.headers.authorization;
     if (!authHeader) return res.status(401).json({msg:"UNAUTHORIZED"});
 
-    const token = authHeader.split(" ")[1]
+    const token = authHeader.split(" ")[1];
 
     jwt.verify(token, String(process.env.JWT_SECRET), async (err:any, data:any) => {
         if(err) return res.status(401).json({msg:"UNAUTHORIZED"});
 
-        const accountData: IAccount = await accountService.getAccountByEmail(data.account) as IAccount;
-        req.account = accountData;
+        const accountData: any = await accountService.getAccountByEmail(data.account);
+        
+        req.account = accountData.email;
         
         next();
     });
