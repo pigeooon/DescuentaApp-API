@@ -1,24 +1,29 @@
 # DescuentApp
 API de DescuentApp, una aplicación para obtener descuentos de los Bancos Chilenos.
 
+Credenciales: 
+"email": "admin@descuentapp.com",
+"password": "$password"
+
 ## Endpoints
 ### Discounts
 ```
-GET /discounts/
-GET /discounts/:id
+GET api/discounts/
+GET api/discounts/:id
 ```
 
 ### Banks
 ```
-GET /banks/
-GET /banks/:id
-POST /banks/
-PUT /banks/:id
-DELETE /banks/:id
+GET api/banks/ [loggeado, administrador]
+GET api/banks/list
+GET api/banks/:id [loggeado, administrador]
+POST api/banks/ [loggeado, administrador]
+PUT api/banks/:id [loggeado, administrador]
+DELETE api/banks/:id [loggeado, administrador]
 
 ```
 
 ## Scraper
 ```
-GET /scraper/launch //lanza las tareas de scraping
+GET /scraper/launch [loggeado, administrador]
 ```
