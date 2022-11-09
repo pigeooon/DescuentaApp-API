@@ -19,8 +19,8 @@ class AccountService {
     async checkAccountAvailability(accountEmail: string) {
         try {
             const account = await Account.findOne({email: accountEmail}).lean();
-            if(!account || !account.email || !account.password) return false;
-            return true;
+            if(!account || !account.email || !account.password) return true;
+            return false;
         }
         catch (err) {
             throw err;
