@@ -7,8 +7,6 @@ class DiscountController {
     }
 
     getDiscounts = async (req: Request, res: Response) => {
-        console.log("buenas :D");
-        
         DiscountService.getDiscounts().then((data) => {
             if(!data || data === null) return res.status(404);
             return res.status(200).json(data);
