@@ -1,8 +1,8 @@
 import puppeteer, { Browser, Page } from "puppeteer";
 import { Bank } from "../models/bank.model";
 import { Scraper } from "../models/scraper.model";
-import { BankType, BankCategoryType } from "../types/bank.type";
-import { DiscountType } from "../types/discount.type";
+import { IBank, IBankCategory } from "../interfaces/bank.interface";
+import { IDiscount } from "../interfaces/discount.interface";
 import { DiscountService } from "./discount.service";
 
 export class ScraperService {
@@ -17,7 +17,7 @@ export class ScraperService {
         scraper.scrap();
     }
 
-    public async scrap(bank: BankType, bankCategory: BankCategoryType): Promise<DiscountType[]> {
+    public async scrap(bank: IBank, bankCategory: IBankCategory): Promise<IDiscount[]> {
         const browser: Browser = await puppeteer.launch();
         const page: Page = await browser.newPage();
 
@@ -35,8 +35,8 @@ export class ScraperService {
         //cerramos la instancia del browser
         await browser.close();
 
-        //construimos el array de DiscountTypes
-        const discountsArray: DiscountType[] = [];
+        //construimos el array de IDiscounts
+        const discountsArray: IDiscount[] = [];
         discounts_name_vector.map((_value, index) => {
             discountsArray.push({
                 name: discounts_name_vector[index],

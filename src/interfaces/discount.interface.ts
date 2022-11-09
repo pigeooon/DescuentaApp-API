@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-export type DiscountType = {
+export interface IDiscount {
     name: string;
     img_url: string;
     description: string;

@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { BankDocument } from "../types/bank.type";
+import { BankDocument } from "../interfaces/bank.interface";
 
 const bankSchema = new mongoose.Schema<BankDocument> (
     {

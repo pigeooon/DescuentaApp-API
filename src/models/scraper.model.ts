@@ -1,11 +1,11 @@
 import { ScraperService } from "../services/scraper.service";
 import { DiscountService } from "../services/discount.service";
-import { BankType, BankCategoryType } from "../types/bank.type";
+import { IBank, IBankCategory } from "../interfaces/bank.interface";
 
 export class Scraper {
     private scraperService: ScraperService;
 
-    constructor(private readonly banks: BankType[]) {
+    constructor(private readonly banks: IBank[]) {
         this.scraperService = new ScraperService(); 
     }
 
@@ -15,10 +15,10 @@ export class Scraper {
         });
     }
 
-    private scrapingCall(bank: BankType) {
+    private scrapingCall(bank: IBank) {
         console.log("🔧 Starting to scrape at " + bank.name + "...");
         
-        bank.discount_categories.map((category: BankCategoryType, _index) => {
+        bank.discount_categories.map((category: IBankCategory, _index) => {
             
             this.scraperService.scrap(bank, category).then((scrapedDiscounts) => {
                 scrapedDiscounts.map((discount, _index) => {

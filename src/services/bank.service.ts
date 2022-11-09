@@ -1,5 +1,5 @@
 import { Bank } from "../models/bank.model";
-import { BankDocument, BankType } from "../types/bank.type";
+import { BankDocument, IBank } from "../interfaces/bank.interface";
 
 export class BankService {
 
@@ -17,14 +17,14 @@ export class BankService {
     }
 
     public static async createBank(bankData: any) {
-        const newBank = bankData as BankType;
+        const newBank = bankData as IBank;
 
         const newBankResponse = await new Bank(newBank).save();
         return newBankResponse;
     }
 
     public static async updateBank(bankId:any, bankData: any) {
-        const updatedBank = bankData as BankType;
+        const updatedBank = bankData as IBank;
 
         const updateBankResponse = await Bank.updateOne({_id: bankId}, updatedBank);
         return updateBankResponse;

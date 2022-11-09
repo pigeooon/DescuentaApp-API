@@ -1,5 +1,5 @@
 import { Discount } from "../models/discount.model";
-import { DiscountDocument, DiscountType } from "../types/discount.type";
+import { DiscountDocument, IDiscount } from "../interfaces/discount.interface";
 
 export class DiscountService {
 
@@ -17,7 +17,7 @@ export class DiscountService {
     }
 
     public static async createDiscount(discountData: any) {
-        const newDiscount = discountData as DiscountType;
+        const newDiscount = discountData as IDiscount;
 
         const newDiscountResponse = await new Discount(newDiscount).save();
         return newDiscountResponse;

@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { DiscountDocument } from "../types/discount.type";
+import { DiscountDocument } from "../interfaces/discount.interface";
 
 const discountSchema = new mongoose.Schema<DiscountDocument> (
     {

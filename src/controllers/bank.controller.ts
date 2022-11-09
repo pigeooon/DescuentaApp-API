@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { BankService } from "../services/bank.service";
-import { BankType } from "../types/bank.type";
+import { IBank } from "../interfaces/bank.interface";
 
 export default class BankController {
 
@@ -30,7 +30,7 @@ export default class BankController {
     }
 
     public createBank(req: Request, res: Response) {
-        const bank = req.body as BankType;
+        const bank = req.body as IBank;
         console.log(bank);
 
         BankService.createBank(bank).then((data) => {
@@ -43,7 +43,7 @@ export default class BankController {
 
     public updateBank(req: Request, res: Response) {
         const bankId = req.params.id;
-        const bank = req.body as BankType;
+        const bank = req.body as IBank;
 
         BankService.updateBank(bankId, bank).then((data) => {
             return res.status(200).json(data);

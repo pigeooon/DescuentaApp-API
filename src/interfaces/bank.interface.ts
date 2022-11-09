@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-export type BankType = { 
+export interface IBank { 
     name: string;
     url: string;
     img_source_url: string;
@@ -10,10 +10,10 @@ export type BankType = {
     discount_details_selector?: string;
     discount_location_selector?: string;
     discount_date_selector?: string;
-    discount_categories: BankCategoryType[];
+    discount_categories: IBankCategory[];
 }
 
-export type BankCategoryType = {
+export interface IBankCategory {
     category: string;
     bank_category_name: string;
     bank_category_selector: string;
@@ -29,5 +29,5 @@ export type BankDocument = mongoose.Document & {
     discount_details_selector: string;
     discount_location_selector: string;
     discount_date_selector: string;
-    discount_categories: BankCategoryType[];
+    discount_categories: IBankCategory[];
 }
