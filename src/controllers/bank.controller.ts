@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { BankService } from "../services/bank.service";
 import { IBank } from "../interfaces/bank.interface";
+import { xssFilter } from "helmet";
 
 class BankController {
 
@@ -11,6 +12,22 @@ class BankController {
         BankService.getBanks().then((data) => {
             if(!data || data === null) return res.status(404);
             return res.status(200).json(data);
+        })
+        .catch((error) => {
+            return res.status(500).json(error);
+        });
+    }
+
+    getBankList = async (req: Request, res: Response) => {
+        BankService.getBanks().then((data) => {
+            if(!data || data === null) return res.status(404);
+
+            let resData: any[] = [];
+            data.map((bank, _id) => {
+                resData.push({name: bank.name});
+            });
+
+            return res.status(200).json(resData);
         })
         .catch((error) => {
             return res.status(500).json(error);
