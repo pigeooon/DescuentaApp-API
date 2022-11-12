@@ -29,7 +29,7 @@ class AccountService {
 
     async createAccount(email: string, password: string) {
         try {
-            const createdAccount = await new Account({email: email, password: password}).save();
+            const createdAccount = await new Account({email: email, password: password, administrator: false}).save();
             return createdAccount;
         }
         catch (err) {

@@ -5,7 +5,7 @@ const bankSchema = new mongoose.Schema<AccountDocument> (
     {
         email: String,
         password: String,
-        administrator: Number,
+        administrator: Boolean,
     }
 );
 
