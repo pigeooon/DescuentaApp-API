@@ -1,3 +1,5 @@
+import { removeHTMLTags } from "../removeHTMLTags";
+
 const percentageRegex = (opts:any) => {
 	opts = opts || {};
 
@@ -7,7 +9,9 @@ const percentageRegex = (opts:any) => {
 }
 
 export const extractPercentageFromString = (description: string) => {
-    const words = description.split(' ');
+    let plainDescription = removeHTMLTags(description);
+
+    const words = plainDescription.split(" ");
 
     for(let i = 0; i < words.length; i++) {
         if(percentageRegex({exact: true}).test(words[i])) {

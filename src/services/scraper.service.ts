@@ -37,23 +37,52 @@ export class ScraperService {
         const discounts_img_vector = await this.scrapImgUrl(page, bank.discount_img_url_selector, bank.img_source_url);
         const discounts_description_vector = await this.scrapPlainText(page, bank.discount_description_selector);
 
+        const detailsButtom = await page.$$(".btn-modal-descuento");
+
+        let discounts_details_vector: any[] = [];
+        for (let buttom of detailsButtom) {
+            await buttom.hover();
+            await buttom.click();
+
+            await page.waitForSelector('#descripcion-beneficio-modal');
+            discounts_details_vector.push(await page.$$eval("#descripcion-beneficio-modal", item => item.map((item) => item.innerHTML)));
+        }   
+
         //cerramos la instancia del browser
         await browser.close();
 
         //construimos el array de IDiscounts
         const discountsArray: IDiscount[] = [];
+        let locationString = "";
+        let dateString = "";
+        let percentageString = "";
+        let cardsArray = [];
         discounts_name_vector.map((_value, index) => {
+
+            locationString = extractLocationFromString(String(discounts_details_vector[index]));
+            if(!locationString) locationString = extractLocationFromString(discounts_description_vector[index]);
+
+            dateString = extractDateFromString(String(discounts_details_vector[index]));
+            if(!dateString) dateString = extractDateFromString(discounts_description_vector[index]);
+            
+            percentageString = extractPercentageFromString(String(discounts_details_vector[index]));
+            if(!percentageString) percentageString = extractPercentageFromString(discounts_description_vector[index]);
+            
+            cardsArray = extractCardsFromString(String(discounts_details_vector[index]));
+            if(!cardsArray) cardsArray = extractCardsFromString(discounts_description_vector[index]);
+
             discountsArray.push({
                 name: discounts_name_vector[index],
                 img_url: discounts_img_vector[index],
                 description: discounts_description_vector[index],
-                location: extractLocationFromString(discounts_description_vector[index]),
-                date: extractDateFromString(discounts_description_vector[index]),
-                percentage: extractPercentageFromString(discounts_description_vector[index]),
-                cards: extractCardsFromString(discounts_description_vector[index]),
+                details: String(discounts_details_vector[index]),
+                location: locationString,
+                date: dateString,
+                percentage: percentageString,
+                cards: cardsArray,
                 bank: bank.name,
                 category: bankCategory.category,
-            });
+            });1
 
         });
         return discountsArray;
