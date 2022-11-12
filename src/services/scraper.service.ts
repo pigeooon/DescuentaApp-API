@@ -5,6 +5,10 @@ import { IBank, IBankCategory } from "../interfaces/bank.interface";
 import { IDiscount } from "../interfaces/discount.interface";
 import { DiscountService } from "./discount.service";
 
+import { extractLocationFromString } from "../utils/location-extractor";
+import { extractDateFromString } from "../utils/date-extractor";
+import { extractPercentageFromString } from "../utils/percentage-extractor";
+
 export class ScraperService {
     constructor() {
     }
@@ -42,6 +46,9 @@ export class ScraperService {
                 name: discounts_name_vector[index],
                 img_url: discounts_img_vector[index],
                 description: discounts_description_vector[index],
+                location: extractLocationFromString(discounts_description_vector[index]),
+                date: extractDateFromString(discounts_description_vector[index]),
+                percentage: extractPercentageFromString(discounts_description_vector[index]),
                 bank: bank.name,
                 category: bankCategory.category,
             });

@@ -10,6 +10,7 @@ const discountSchema = new mongoose.Schema<DiscountDocument> (
         bank: String,
         category: String,
         location: String,
+        percentage: String,
         date: String,
     }
 );

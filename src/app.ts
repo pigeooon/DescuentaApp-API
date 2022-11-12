@@ -1,4 +1,6 @@
-import express, { Request, Response } from "express";
+import express from "express";
+import https from "https";
+import fs from "fs";
 import cors from "cors";
 import morgan from "morgan";
 import helmet from "helmet";
@@ -9,7 +11,7 @@ import { router } from './routes';
 
 //express
 const app = express();
-app.set('port', process.env.PORT || 3000);
+app.set('port', 443);
 app.use(cors());
 app.use(helmet());
 app.use(morgan('dev'));
@@ -30,7 +32,18 @@ mongoose.connect(String(process.env.DB_CONN_STRING)).then(
 app.use('/', router);
 
 //server
-const server = app.listen(app.get("port"), "127.0.0.1", () => {
+const options = {
+    key: fs.readFileSync("private.key"),
+    cert: fs.readFileSync("certificate.crt"),
+    ca: fs.readFileSync("ca_bundle.crt"),
+};
+
+const server = https.createServer(options, app).listen(app.get("port"), "170.239.85.243", () => {
+    const { port, address } = server.address() as AddressInfo;
+    console.log("\n✅ DESCUENTA-APP API | Listening on:", "https://" + address + ":" + port + " |")
+});
+
+/*const server = app.listen(app.get("port"), "127.0.0.1", () => {
     const { port, address } = server.address() as AddressInfo;
     console.log("\n✅ DESCUENTA-APP API | Listening on:", "http://" + address + ":" + port + " |")
-})
+});*/
