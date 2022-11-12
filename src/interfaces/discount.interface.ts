@@ -10,6 +10,7 @@ export interface IDiscount {
     location?: string;
     percentage?: string;
     date?: string;
+    cards: string;
 };
 
 export type DiscountDocument = mongoose.Document & {
@@ -22,4 +23,5 @@ export type DiscountDocument = mongoose.Document & {
     location: string;
     percentage: string;
     date: string;
+    cards: string;
 };

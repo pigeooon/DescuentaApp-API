@@ -8,6 +8,7 @@ import { DiscountService } from "./discount.service";
 import { extractLocationFromString } from "../utils/location-extractor";
 import { extractDateFromString } from "../utils/date-extractor";
 import { extractPercentageFromString } from "../utils/percentage-extractor";
+import { extractCardsFromString } from "../utils/card-extractor";
 
 export class ScraperService {
     constructor() {
@@ -49,6 +50,7 @@ export class ScraperService {
                 location: extractLocationFromString(discounts_description_vector[index]),
                 date: extractDateFromString(discounts_description_vector[index]),
                 percentage: extractPercentageFromString(discounts_description_vector[index]),
+                cards: extractCardsFromString(discounts_description_vector[index]),
                 bank: bank.name,
                 category: bankCategory.category,
             });
