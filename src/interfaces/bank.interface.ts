@@ -7,8 +7,9 @@ export interface IBank {
     discount_name_selector: string; 
     discount_img_url_selector: string;
     discount_description_selector: string;
-    discount_details_selector?: string;
-    discount_location_selector?: string;
+    discount_details_button_selector: string;
+    discount_details_selector: string;
+    discount_location_selector: string;
     discount_date_selector?: string;
     discount_categories: IBankCategory[];
 }
@@ -26,6 +27,7 @@ export type BankDocument = mongoose.Document & {
     discount_name_selector: string; 
     discount_img_url_selector: string;
     discount_description_selector: string;
+    discount_details_button_selector: string;
     discount_details_selector: string;
     discount_location_selector: string;
     discount_date_selector: string;

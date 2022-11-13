@@ -37,16 +37,17 @@ export class ScraperService {
         const discounts_img_vector = await this.scrapImgUrl(page, bank.discount_img_url_selector, bank.img_source_url);
         const discounts_description_vector = await this.scrapPlainText(page, bank.discount_description_selector);
 
-        const detailsButtom = await page.$$(".btn-modal-descuento");
-
+        //caso detalles en modal: discount_details_button_selector + modal discount_details_selector
         let discounts_details_vector: any[] = [];
-        for (let buttom of detailsButtom) {
-            await buttom.hover();
-            await buttom.click();
-
-            await page.waitForSelector('#descripcion-beneficio-modal');
-            discounts_details_vector.push(await page.$$eval("#descripcion-beneficio-modal", item => item.map((item) => item.innerHTML)));
-        }   
+        if(bank.discount_details_button_selector && bank.discount_details_selector) {
+            const detailsButtons = await page.$$(bank.discount_details_button_selector);
+            for (let buttom of detailsButtons) {
+                await buttom.hover();
+                await buttom.click();
+                await page.waitForSelector(bank.discount_details_selector);
+                discounts_details_vector.push(await page.$$eval(bank.discount_details_selector, item => item.map((item) => item.innerHTML)));
+            }
+        }
 
         //cerramos la instancia del browser
         await browser.close();
