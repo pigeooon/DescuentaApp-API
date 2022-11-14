@@ -18,9 +18,10 @@ class AuthController {
             const token = req.headers.authorization;
             if(!token) return res.status(StatusCodes.UNAUTHORIZED).json({msg:"La sesión de usuario es inválida."});
 
-            jwt.verify(token, String(process.env.JWT_SECRET));
-
-            return res.status(StatusCodes.OK);
+            jwt.verify(token, String(process.env.JWT_SECRET), async (err:any, data:any) => {
+                if(err) return res.status(StatusCodes.UNAUTHORIZED).json({msg:"La sesión de usuario es inválida."});
+                return res.status(StatusCodes.OK);
+            });
         }
         catch (error) {
             console.error(error);
