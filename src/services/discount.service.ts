@@ -16,6 +16,15 @@ export class DiscountService {
         return singleDiscount;
     }
 
+    public static async getFeaturedDiscounts() {
+        const featuredDiscounts = await Discount
+            .find({ percentage: { "$in" : ["90%", "80%", "70%", "60%", "50%"]} })
+            .sort({ percentage: -1 })
+            .limit(15)
+            .lean();
+        return featuredDiscounts;
+    }
+
     public static async createDiscount(discountData: any) {
         const newDiscount = discountData as IDiscount;
 
