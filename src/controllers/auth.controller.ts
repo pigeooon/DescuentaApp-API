@@ -4,7 +4,6 @@ import { StatusCodes } from "http-status-codes";
 import "dotenv/config";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { Account } from "../models/account.model";
 import { accountService } from "../services/account.service";
 
 
@@ -13,14 +12,17 @@ class AuthController {
     constructor() {
     }
 
-    validateJwt = async (req: any, res: any) => {
+    getProfile = async (req: any, res: any) => {
         try {
-            const token = req.headers.authorization;
-            if(!token) return res.status(StatusCodes.UNAUTHORIZED).json({msg:"La sesión de usuario es inválida."});
+            const authHeader = req.headers.authorization;
+            if(!authHeader) return res.status(StatusCodes.UNAUTHORIZED).json({msg:"La sesión de usuario es inválida."});
 
+            const token = authHeader.split(" ")[1];
             jwt.verify(token, String(process.env.JWT_SECRET), async (err:any, data:any) => {
                 if(err) return res.status(StatusCodes.UNAUTHORIZED).json({msg:"La sesión de usuario es inválida."});
-                return res.status(StatusCodes.OK);
+                
+                const accountData = await accountService.getAccountByEmail(data.account);
+                return res.status(StatusCodes.OK).json(accountData);
             });
         }
         catch (error) {
