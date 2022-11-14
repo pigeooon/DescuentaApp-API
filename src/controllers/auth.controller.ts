@@ -89,7 +89,7 @@ class AuthController {
 
             const encryptedPassword = bcrypt.hashSync(credentials.password, 10);
 
-            const createdAccount = await accountService.createAccount(String(credentials.email), String(encryptedPassword));
+            const createdAccount = await accountService.createAccount(String(credentials.name), String(credentials.email), String(encryptedPassword));
             if(!createdAccount) return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({msg: "La cuenta no fue registrada."});
 
             const accessToken = jwt.sign({account: createdAccount.email}, String(process.env.JWT_SECRET), {

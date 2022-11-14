@@ -27,9 +27,9 @@ class AccountService {
         }
     }
 
-    async createAccount(email: string, password: string) {
+    async createAccount(name: string, email: string, password: string) {
         try {
-            const createdAccount = await new Account({email: email, password: password, administrator: false}).save();
+            const createdAccount = await new Account({name: name, email: email, password: password, administrator: false}).save();
             return createdAccount;
         }
         catch (err) {
