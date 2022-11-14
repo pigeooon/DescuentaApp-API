@@ -18,15 +18,14 @@ export class Scraper {
     private scrapingCall(bank: IBank) {
         console.log("🔧 Starting to scrape at " + bank.name + "...");
         
-        bank.discount_categories.map((category: IBankCategory, _index) => {
-            
-            this.scraperService.scrap(bank, category).then((scrapedDiscounts) => {
+        bank.discount_categories.map(async (category: IBankCategory, _index) => {
+            await this.scraperService.scrap(bank, category).then((scrapedDiscounts) => {
                 scrapedDiscounts.map((discount, _index) => {
                     DiscountService.createDiscount(discount);
                 });
     
                 if(scrapedDiscounts.length)
-                    console.log("🏦 " + bank.name + ": ✅ " + scrapedDiscounts.length + " discounts scraped from " + category.bank_category_name + " category!");
+                    console.log("🏦 " + bank.name + ": ✅ " + scrapedDiscounts.length + " discounts scraped to " + category.category + " category!");
                 else
                     console.log("🏦 " + bank.name + ": ❔ no discounts on " + category.bank_category_name + " category.");
     
