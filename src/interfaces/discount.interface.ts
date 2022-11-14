@@ -17,11 +17,11 @@ export type DiscountDocument = mongoose.Document & {
     name: string;
     img_url: string;
     description: string;
-    details: string;
+    details?: string;
     bank: string;
     category: string;
-    location: string;
-    percentage: string;
-    date: string;
+    location?: string;
+    percentage?: string;
+    date?: string;
     cards: string[];
 };

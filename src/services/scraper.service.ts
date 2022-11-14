@@ -9,6 +9,7 @@ import { extractLocationFromString } from "../utils/location-extractor";
 import { extractDateFromString } from "../utils/date-extractor";
 import { extractPercentageFromString } from "../utils/percentage-extractor";
 import { extractCardsFromString } from "../utils/card-extractor";
+import { removeExtraCharacters } from "../utils/removeExtraCharacters";
 
 export class ScraperService {
     constructor() {
@@ -22,19 +23,23 @@ export class ScraperService {
         scraper.scrap();
     }
 
-    public async scrap(bank: IBank, bankCategory: IBankCategory): Promise<IDiscount[]> {
+    public async scrap(bank: IBank, bankCategory: IBankCategory): Promise<IDiscount[]> {        
+        const discountsArray: IDiscount[] = [];
+
         const browser: Browser = await puppeteer.launch();
         const page: Page = await browser.newPage();
-
-        await page.goto(bank.url, { waitUntil:["load", "domcontentloaded", "networkidle0", "networkidle2"] });    
+        
+        await page.setDefaultNavigationTimeout(0); 
+        await page.goto(bank.url, { waitUntil:["load", "domcontentloaded", "networkidle0", "networkidle2"], timeout: 0 });    
         
         let categorySelector = bankCategory.bank_category_selector.replace('$', bankCategory.bank_category_name);
+
         await page.waitForSelector(categorySelector);
         await page.click(categorySelector);
 
         //llamadas a distintos métodos de selección de atributos
         const discounts_name_vector = await this.scrapPlainText(page, bank.discount_name_selector);
-        const discounts_img_vector = await this.scrapImgUrl(page, bank.discount_img_url_selector, bank.img_source_url);
+        const discounts_img_vector = await this.scrapImgUrl(page, bank.discount_img_url_selector, bank.img_source_url, bank.name);
         const discounts_description_vector = await this.scrapPlainText(page, bank.discount_description_selector);
 
         //caso detalles en modal: discount_details_button_selector + modal discount_details_selector
@@ -53,33 +58,38 @@ export class ScraperService {
         await browser.close();
 
         //construimos el array de IDiscounts
-        const discountsArray: IDiscount[] = [];
-        let locationString = "";
-        let dateString = "";
-        let percentageString = "";
+        let detailsString: string | null = "";
+        let locationString: string | null = "";
+        let dateString: string | null = "";
+        let percentageString: string | null = "";
         let cardsArray = [];
         discounts_name_vector.map((_value, index) => {
+            detailsString = removeExtraCharacters(String(discounts_details_vector[index]));
+            if(detailsString === "") detailsString = null;
 
             locationString = extractLocationFromString(String(discounts_details_vector[index]));
             if(!locationString) locationString = extractLocationFromString(discounts_description_vector[index]);
+            if(locationString === "") locationString = null;
 
             dateString = extractDateFromString(String(discounts_details_vector[index]));
             if(!dateString) dateString = extractDateFromString(discounts_description_vector[index]);
+            if(dateString === "") dateString = null;
             
             percentageString = extractPercentageFromString(String(discounts_details_vector[index]));
             if(!percentageString) percentageString = extractPercentageFromString(discounts_description_vector[index]);
+            if(percentageString === "") percentageString = null;
             
             cardsArray = extractCardsFromString(String(discounts_details_vector[index]));
             if(!cardsArray) cardsArray = extractCardsFromString(discounts_description_vector[index]);
 
             discountsArray.push({
-                name: discounts_name_vector[index],
+                name: removeExtraCharacters(discounts_name_vector[index]),
                 img_url: discounts_img_vector[index],
-                description: discounts_description_vector[index],
-                details: String(discounts_details_vector[index]),
-                location: locationString,
-                date: dateString,
-                percentage: percentageString,
+                description: removeExtraCharacters(discounts_description_vector[index]),
+                details: detailsString || undefined,
+                location: locationString || undefined,
+                date: dateString || undefined,
+                percentage: percentageString || undefined,
                 cards: cardsArray,
                 bank: bank.name,
                 category: bankCategory.category,
@@ -94,12 +104,13 @@ export class ScraperService {
         return results;
     } 
 
-    private async scrapImgUrl(page: Page, selector: string, base_url: string) {
+    private async scrapImgUrl(page: Page, selector: string, base_url: string, bank_name: string) {
         const results = await page.$$eval(selector, item => item.map((item) => item.getAttribute('src')));
         const formattedResults: any[] = [];
 
         results.map((value, _index) => {
-            formattedResults.push((base_url + value).replace(/ /g, '%20')); //cambiar espacios por %20
+            if(bank_name === "Scotiabank") formattedResults.push((base_url + value).replace(/ /g, '%20'));
+            else formattedResults.push(value.replace(/ /g, '%20'));
         });
         return formattedResults;
     }

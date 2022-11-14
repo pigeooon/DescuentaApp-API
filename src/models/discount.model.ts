@@ -6,12 +6,12 @@ const discountSchema = new mongoose.Schema<DiscountDocument> (
         name: String,
         img_url: String,
         description: String,
-        details: String,
+        details: {type: String, required: false},
         bank: String,
         category: String,
-        location: String,
-        percentage: String,
-        date: String,
+        location: {type: String, required: false},
+        percentage: {type: String, required: false},
+        date: {type: String, required: false},
         cards: [],
     }
 );
