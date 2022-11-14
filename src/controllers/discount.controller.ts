@@ -1,4 +1,6 @@
 import { Request, Response } from "express";
+import { StatusCodes } from "http-status-codes";
+
 import { DiscountService } from "../services/discount.service";
 
 class DiscountController {
@@ -8,11 +10,12 @@ class DiscountController {
 
     getDiscounts = async (req: Request, res: Response) => {
         DiscountService.getDiscounts().then((data) => {
-            if(!data || data === null) return res.status(404);
-            return res.status(200).json(data);
+            if(!data || data === null) return res.status(StatusCodes.NOT_FOUND);
+            return res.status(StatusCodes.OK).json(data);
         })
         .catch((error) => {
-            return res.status(500).json(error);
+            console.error(error);
+            return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({msg: "Error interno del servidor.", error: error});
         });
     }
 
@@ -20,11 +23,12 @@ class DiscountController {
         const discountId = req.params.id;
         
         DiscountService.getDiscountById(discountId).then((data) => {
-            if(!data || data === null) return res.status(404);
-            return res.status(200).json(data);
+            if(!data || data === null) return res.status(StatusCodes.NOT_FOUND);
+            return res.status(StatusCodes.OK).json(data);
         })
         .catch((error) => {
-            return res.status(500).json(error);
+            console.error(error);
+            return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({msg: "Error interno del servidor.", error: error});
         });
     }
 }

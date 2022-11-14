@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
+import { StatusCodes } from "http-status-codes";
 import { BankService } from "../services/bank.service";
 import { IBank } from "../interfaces/bank.interface";
-import { xssFilter } from "helmet";
 
 class BankController {
 
@@ -10,27 +10,29 @@ class BankController {
 
     getBanks = async (req: Request, res: Response) => {
         BankService.getBanks().then((data) => {
-            if(!data || data === null) return res.status(404);
-            return res.status(200).json(data);
+            if(!data || data === null) return res.status(StatusCodes.NOT_FOUND);
+            return res.status(StatusCodes.OK).json(data);
         })
         .catch((error) => {
-            return res.status(500).json(error);
+            console.error(error);
+            return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({msg: "Error interno del servidor.", error: error});
         });
     }
 
     getBankList = async (req: Request, res: Response) => {
         BankService.getBanks().then((data) => {
-            if(!data || data === null) return res.status(404);
+            if(!data || data === null) return res.status(StatusCodes.NOT_FOUND);
 
             let resData: any[] = [];
             data.map((bank, _id) => {
                 resData.push({name: bank.name});
             });
 
-            return res.status(200).json(resData);
+            return res.status(StatusCodes.OK).json(resData);
         })
         .catch((error) => {
-            return res.status(500).json(error);
+            console.error(error);
+            return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({msg: "Error interno del servidor.", error: error});
         });
     }
 
@@ -38,11 +40,12 @@ class BankController {
         const bankId = req.params.id;
         
         BankService.getBankById(bankId).then((data) => {
-            if(!data || data === null) return res.status(404);
-            return res.status(200).json(data);
+            if(!data || data === null) return res.status(StatusCodes.NOT_FOUND);
+            return res.status(StatusCodes.OK).json(data);
         })
         .catch((error) => {
-            return res.status(500).json(error);
+            console.error(error);
+            return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({msg: "Error interno del servidor.", error: error});
         });
     }
 
@@ -51,10 +54,11 @@ class BankController {
         console.log(bank);
 
         BankService.createBank(bank).then((data) => {
-            return res.status(201).json(data);
+            return res.status(StatusCodes.CREATED).json(data);
         })
         .catch((error) => {
-            return res.status(500).json(error);
+            console.error(error);
+            return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({msg: "Error interno del servidor.", error: error});
         });
     }
 
@@ -63,10 +67,11 @@ class BankController {
         const bank = req.body as IBank;
 
         BankService.updateBank(bankId, bank).then((data) => {
-            return res.status(200).json(data);
+            return res.status(StatusCodes.OK).json(data);
         })
         .catch((error) => {
-            return res.status(500).json(error);
+            console.error(error);
+            return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({msg: "Error interno del servidor.", error: error});
         });
     }
 
@@ -74,10 +79,11 @@ class BankController {
         const bankId = req.params.id;
 
         BankService.deleteBank(bankId).then((data) => {
-            return res.status(205).json(data);
+            return res.status(StatusCodes.RESET_CONTENT).json(data);
         })
         .catch((error) => {
-            return res.status(500).json(error);
+            console.error(error);
+            return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({msg: "Error interno del servidor.", error: error});
         });
     }
 }
