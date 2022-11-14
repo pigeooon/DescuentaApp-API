@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 
 import { DiscountService } from "../services/discount.service";
+import { DiscountCategories } from "../utils/categories.enum";
 
 class DiscountController {
 
@@ -41,6 +42,10 @@ class DiscountController {
             console.error(error);
             return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({msg: "Error interno del servidor.", error: error});
         });
+    }
+
+    getDiscountCategories = async (req: Request, res: Response) => {
+        return res.status(StatusCodes.OK).json(DiscountCategories);
     }
 }
 

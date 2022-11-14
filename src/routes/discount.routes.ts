@@ -6,6 +6,7 @@ const prefix = "/discounts";
 
 router.get(`${prefix}`, discountController.getDiscounts);
 router.get(`${prefix}/featured`, discountController.getFeaturedDiscounts);
+router.get(`${prefix}/categories`, discountController.getDiscountCategories);
 router.get(`${prefix}/:id`, discountController.getDiscountById);
 
 export default router;
