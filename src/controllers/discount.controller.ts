@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 
 import { DiscountService } from "../services/discount.service";
-import { DiscountCategories } from "../utils/categories.enum";
+import { discountCategories } from "../utils/discountCategories";
 
 class DiscountController {
 
@@ -45,7 +45,7 @@ class DiscountController {
     }
 
     getDiscountCategories = async (req: Request, res: Response) => {
-        return res.status(StatusCodes.OK).json(DiscountCategories);
+        return res.status(StatusCodes.OK).json(discountCategories);
     }
 }
 
