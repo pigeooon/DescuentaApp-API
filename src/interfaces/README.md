@@ -57,7 +57,4 @@ se exportan los datos danteriores al documento mongoose
 
 
 
-## Scraper
-```
-GET /scraper/launch [loggeado, administrador]
-```
+
