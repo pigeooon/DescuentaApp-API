@@ -15,11 +15,11 @@ Credenciales:
 #### Account interface
 ```
 {
-  _id: string,
-  name: string,
-  email: string,
-  password: string,
-  administrator: string
+  _id: string;
+  name: string;
+  email: string;
+  password: string;
+  administrator: string;
 }
 
 ```
@@ -68,17 +68,17 @@ Responses:
 #### Discount interface
 ```
 {
-  _id: string,
-  name: string,
-  img_url: string,
-  description: string,
-  details: string,
-  category: string,
-  bank: string,
-  percentage: string,
-  location: string,
-  date: string,
-  cards: string[],
+  _id: string;
+  name: string;
+  img_url: string;
+  description: string;
+  details: string;
+  category: string;
+  bank: string;
+  percentage: string;
+  location: string;
+  date: string;
+  cards: [];
 }
 ```
 
@@ -97,6 +97,7 @@ Responses:
 ```
 Requests: 
 - headers: { }
+- params: discount._id
 - body: { }
 
 Responses:
@@ -126,18 +127,124 @@ Responses:
 - OK (200): Si existen categorías de descuentos, devuelve todas las instancias como { name: string, ionicIcon: string }.
 ```
 
-### Banks
-```
-GET api/banks/ [loggeado, administrador]
-GET api/banks/list
-GET api/banks/:id [loggeado, administrador]
-POST api/banks/ [loggeado, administrador]
-PUT api/banks/:id [loggeado, administrador]
-DELETE api/banks/:id [loggeado, administrador]
+### 🏦 Banks
 
+#### Bank interface
+```
+{
+  name: string;
+  url: string;
+  img_source_url: string;
+  discount_name_selector: string; 
+  discount_img_url_selector: string;
+  discount_description_selector: string;
+  discount_details_button_selector: string;
+  discount_details_selector: string;
+  discount_location_selector: string;
+  discount_date_selector?: string;
+  discount_categories: IBankCategory[];
+}
 ```
 
-## Scraper
+- `GET api/banks/list`: Consulta el listado de bancos.
 ```
-GET /scraper/launch [loggeado, administrador]
+Requests: 
+- headers: { }
+- body: { }
+
+Responses:
+- NOT_FOUND (404): Si no existen bancos en la base de datos.
+- OK (200): Si existen bancos, devuelve todas las instancias como { name: string }.
+```
+
+- `GET api/banks`: Consulta el listado de bancos.
+```
+Requests: 
+- headers: { headers.authorization }
+- body: { }
+
+Responses:
+- UNAUTHORIZED (401): Si token de sesión es inválido.
+- UNAUTHORIZED (401): Si usuario no es administrador.
+- NOT_FOUND (404): Si no existen bancos en la base de datos.
+- OK (200): Si existen bancos, devuelve todas las instancias.
+```
+
+- `GET api/banks/:id`: Consulta un banco en específico.
+```
+Requests: 
+- headers: { headers.authorization }
+- params: bank._id
+- body: { }
+
+Responses:
+- UNAUTHORIZED (401): Si token de sesión es inválido.
+- UNAUTHORIZED (401): Si usuario no es administrador.
+- NOT_FOUND (404): Si no existe el bnaco en la base de datos.
+- OK (200): Si existe el bancos devuelve su instancia.
+```
+
+- `POST api/banks`: Crea un banco en la base de datos.
+```
+Requests: 
+- headers: { headers.authorization }
+- body: 
+{
+  name: string,
+  url: string,
+  img_source_url: string,
+  discount_name_selector: string,
+  discount_img_url_selector: string,
+  discount_description_selector: string,
+  discount_details_button_selector: string,
+  discount_details_selector: string,
+  discount_location_selector: string,
+  discount_date_selector?: string,
+  discount_categories: IBankCategory[],
+}
+
+Responses:
+- UNAUTHORIZED (401): Si token de sesión es inválido.
+- UNAUTHORIZED (401): Si usuario no es administrador.
+- CREATED (201): Si el banco fue creado en la base de datos, incluye la instancia del banco.
+```
+
+- `PUT api/banks/:id`: Actualiza un banco en la base de datos.
+```
+Requests: 
+- headers: { headers.authorization }
+- params: bank._id
+- body: 
+{
+  _id: string,
+  name: string,
+  url: string,
+  img_source_url: string,
+  discount_name_selector: string,
+  discount_img_url_selector: string,
+  discount_description_selector: string,
+  discount_details_button_selector: string,
+  discount_details_selector: string,
+  discount_location_selector: string,
+  discount_date_selector?: string,
+  discount_categories: IBankCategory[],
+}
+
+Responses:
+- UNAUTHORIZED (401): Si token de sesión es inválido.
+- UNAUTHORIZED (401): Si usuario no es administrador.
+- RESET_CONTENT (205): Si el banco fue actualizado en la base de datos, incluye la instancia del banco.
+```
+
+- `DELETE api/banks/:id`: Elimina un banco de la base de datos.
+```
+Requests: 
+- headers: { headers.authorization }
+- params: bank._id
+- body: { }
+
+Responses:
+- UNAUTHORIZED (401): Si token de sesión es inválido.
+- UNAUTHORIZED (401): Si usuario no es administrador.
+- RESET_CONTENT (205): Si el banco fue eliminado de la base de datos, incluye la instancia del banco eliminado.
 ```
