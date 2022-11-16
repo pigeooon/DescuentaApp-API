@@ -12,6 +12,17 @@ Credenciales:
 ## Endpoints
 ### 👤 Auth
 
+#### Account interface
+```
+{
+  _id: string,
+  name: string,
+  email: string,
+  password: string,
+  administrator: string
+}
+
+```
 - `POST api/auth/login`: Acceso con correo electrónico y contraseña.
 ```
 Requests: 
@@ -52,10 +63,67 @@ Responses:
 - OK (200): Si el token es válido, incluye { _id:string, name:string, email:string, administrator:boolean }.
 ```
 
-### Discounts
+### 🎟️ Discounts
+
+#### Discount interface
 ```
-GET api/discounts/
-GET api/discounts/:id
+{
+  _id: string,
+  name: string,
+  img_url: string,
+  description: string,
+  details: string,
+  category: string,
+  bank: string,
+  percentage: string,
+  location: string,
+  date: string,
+  cards: string[],
+}
+```
+
+- `GET api/discounts/`: Consulta de todos los descuentos.
+```
+Requests: 
+- headers: { }
+- body: { }
+
+Responses:
+- NOT_FOUND (404): Si no existen descuentos en la base de datos.
+- OK (200): Si existen descuentos, devuelve todas las instancias.
+```
+
+- `GET api/discounts/:id`: Consulta un descuento en específico.
+```
+Requests: 
+- headers: { }
+- body: { }
+
+Responses:
+- NOT_FOUND (404): Si no existe el descuento en la base de datos.
+- OK (200): Si existe el descuento, devuelve su instancia.
+```
+
+- `GET api/discounts/featured`: Consulta de todos los descuentos destacados.
+```
+Requests: 
+- headers: { }
+- body: { }
+
+Responses:
+- NOT_FOUND (404): Si no existen descuentos destacados en la base de datos.
+- OK (200): Si existen descuentos destacados, devuelve todas las instancias.
+```
+
+- `GET api/discounts/categories`: Consulta las categorías de descuentos.
+```
+Requests: 
+- headers: { }
+- body: { }
+
+Responses:
+- NOT_FOUND (404): Si no existen categorías de descuentos.
+- OK (200): Si existen categorías de descuentos, devuelve todas las instancias como { name: string, ionicIcon: string }.
 ```
 
 ### Banks
