@@ -248,3 +248,19 @@ Responses:
 - UNAUTHORIZED (401): Si usuario no es administrador.
 - RESET_CONTENT (205): Si el banco fue eliminado de la base de datos, incluye la instancia del banco eliminado.
 ```
+
+### 🕷️ Scraper
+
+- `PUT api/scraper/launch/:id`: Lanza el scraping en un banco específico.
+```
+Requests: 
+- headers: { headers.authorization }
+- params: bank._id
+- body: { }
+
+Responses:
+- UNAUTHORIZED (401): Si token de sesión es inválido.
+- UNAUTHORIZED (401): Si usuario no es administrador.
+- OK (200): Si el scraping fue realizado con éxito, incluye metaScraping data como { bankName: string, discountsExtracted: number, affectedCategories: number}.
+- INTERNAL_SERVER_ERROR (500): Si el scraping fue cancelado por algún error interno del servidor, incluye el error como { error: error }.
+```
