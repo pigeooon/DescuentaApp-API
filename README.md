@@ -1,19 +1,56 @@
-# DescuentApp
-API de DescuentApp, una aplicación para obtener descuentos de los Bancos Chilenos.
+# Descuentalo.APP
+Documentación de la interfaz de programación de las aplicaciones de Descuentalo.APP.
 
-Credenciales: 
-"email": "admin@descuentapp.com",
-"password": "$password"
+Credenciales:
+```
+{
+  "email": "admin@descuentapp.com",
+  "password": "$password"
+}
+```
 
 ## Endpoints
-### Auth
+### 👤 Auth
+
+- `POST api/auth/login`: Acceso con correo electrónico y contraseña.
 ```
-POST api/auth/login
-POST api/auth/signup
-GET api/auth/session
+Requests: 
+- headers: { }
+- body: { email:string, password:string }
+
+Responses:
+- BAD_REQUEST (400): Si email no es válido.
+- BAD_REQUEST (400): Si password no es válido.
+- NOT_FOUND (404): Si el email no está registrado.
+- UNAUTHORIZED (401): Si la contraseña no coincide con el email.
+- OK (200): Si el usuario está registrado y la contraseña coincide, incluye el jsonwebtoken como accessToken.
 ```
 
-El token es solicitado en `req.headers.authorization` en la API, por ende debe enviarse en `Authorization` como `bearer-token`.
+- `POST api/auth/signup`: Registro con nombre, correo electrónico y contraseña.
+```
+Requests: 
+- headers: { }
+- body: { name: string, email:string, password:string }
+
+Responses:
+- BAD_REQUEST (400): Si name no es válido.
+- BAD_REQUEST (400): Si email no es válido.
+- BAD_REQUEST (400): Si password no es válido.
+- BAD_REQUEST (400): Si email está registrado.
+- OK (200): Si el usuario fue registrado, incluye el jsonwebtoken como accessToken.
+```
+
+- `GET api/auth/session`: Consulta de sesión con el jwt.
+```
+Requests: 
+- headers: { headers.authorization }
+- body: { }
+
+Responses:
+- UNAUTHORIZED (401): Si token no viene incluido en headers.authorization.
+- UNAUTHORIZED (401): Si token es invalido.
+- OK (200): Si el token es válido, incluye { _id:string, name:string, email:string, administrator:boolean }.
+```
 
 ### Discounts
 ```
