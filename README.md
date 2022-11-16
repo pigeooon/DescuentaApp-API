@@ -9,6 +9,22 @@ Credenciales:
 }
 ```
 
+## Onboarding
+### Utilizando Node
+Requisitos:
+- Tener el puerto 3000 sin ninguna aplicación corriendo.
+- Instalar como mínimo Node v16 y NPM v8.
+
+Pasos:
+1. Para instalar las dependencias correr el siguiente comando:
+`npm ci`
+
+2. Para correr la aplicación en development:
+`npm run dev`
+
+3. Para correr la aplicación en producción:
+`npm run start`
+
 ## Endpoints
 ### 👤 Auth
 
