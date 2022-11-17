@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
+import { IDiscountFilters } from "../interfaces/discountFilters.interface";
 
 import { DiscountService } from "../services/discount.service";
 import { discountCategories } from "../utils/discountCategories";
@@ -35,6 +36,19 @@ class DiscountController {
 
     getFeaturedDiscounts = async (req: Request, res: Response) => {
         DiscountService.getFeaturedDiscounts().then((data) => {
+            if(!data || data === null) return res.status(StatusCodes.NOT_FOUND);
+            return res.status(StatusCodes.OK).json(data);
+        })
+        .catch((error) => {
+            console.error(error);
+            return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({msg: "Error interno del servidor.", error: error});
+        });
+    }
+
+    getFilteredDiscounts = async (req: Request, res: Response) => {
+        const filters: IDiscountFilters = req.body as IDiscountFilters;
+
+        DiscountService.getFilteredDiscounts(filters).then((data) => {
             if(!data || data === null) return res.status(StatusCodes.NOT_FOUND);
             return res.status(StatusCodes.OK).json(data);
         })
