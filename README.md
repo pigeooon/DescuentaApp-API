@@ -36,6 +36,7 @@ Pasos:
   email: string;
   password: string;
   administrator: string;
+  preferences: [];
 }
 
 ```
@@ -130,6 +131,40 @@ Requests:
 Responses:
 - NOT_FOUND (404): Si no existen descuentos destacados en la base de datos.
 - OK (200): Si existen descuentos destacados, devuelve todas las instancias.
+```
+
+- `GET api/discounts/filter`: Consulta filtrada de descuentos.
+```
+Requests: 
+- headers: { }
+- body: 
+{
+    name?: string;
+    categories?: [];
+    banks?: [];
+    cards?: [];
+    dates?: [];
+    locations?: [];
+}
+
+Los parámetros del body son opcionales. La búsqueda será en todas las coincidencias de la base de datos.
+Este mismo cuerpo del body debe almacenarse en account.preferences.
+
+Responses:
+- NOT_FOUND (404): Si no existen descuentos en la base de datos.
+- OK (200): Si existen descuentos que coinciden con los filtros, devuelve todas sus instancias.
+```
+
+- `GET api/discounts/:id`: Consulta un descuento en específico.
+```
+Requests: 
+- headers: { }
+- params: discount._id
+- body: { }
+
+Responses:
+- NOT_FOUND (404): Si no existe el descuento en la base de datos.
+- OK (200): Si existe el descuento, devuelve su instancia.
 ```
 
 - `GET api/discounts/categories`: Consulta las categorías de descuentos.
