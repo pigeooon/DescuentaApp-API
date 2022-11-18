@@ -4,6 +4,7 @@ export interface IBank {
     name: string;
     url: string;
     img_source_url: string;
+    scraping_type: string; //json-page or single-page-app
     discount_name_selector: string; 
     discount_img_url_selector: string;
     discount_description_selector: string;
@@ -24,6 +25,7 @@ export type BankDocument = mongoose.Document & {
     name: string;
     url: string;
     img_source_url: string;
+    scraping_type: string;
     discount_name_selector: string; 
     discount_img_url_selector: string;
     discount_description_selector: string;

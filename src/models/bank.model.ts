@@ -6,6 +6,7 @@ const bankSchema = new mongoose.Schema<BankDocument> (
         name: String,
         url: String,
         img_source_url: String,
+        scraping_type: String,
         discount_name_selector: String,
         discount_img_url_selector: String,
         discount_description_selector: String,
