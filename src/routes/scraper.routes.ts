@@ -6,6 +6,6 @@ import { authMiddleware } from "../middlewares/auth.middleware";
 const router = express.Router();
 const prefix = "/scraper"
 
-router.get(`${prefix}/launch`, [authMiddleware, adminMiddleware], scraperController.launchScraping);
+router.put(`${prefix}/launch/:id`, [authMiddleware, adminMiddleware], scraperController.launchScraping);
 
 export default router;

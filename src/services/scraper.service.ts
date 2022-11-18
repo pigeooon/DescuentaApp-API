@@ -1,5 +1,4 @@
 import puppeteer, { Browser, Page } from "puppeteer";
-import { Bank } from "../models/bank.model";
 import { Scraper } from "../models/scraper.model";
 import { IBank, IBankCategory } from "../interfaces/bank.interface";
 import { IDiscount } from "../interfaces/discount.interface";
@@ -16,11 +15,10 @@ export class ScraperService {
     }
 
     //borra los descuentos existentes y llama a los servicios de scraping
-    public static async launchScraping() {
-        await DiscountService.deleteDiscounts();
-        const banks = await Bank.find();
-        const scraper = new Scraper(banks);
-        scraper.scrap();
+    public static async launchScraping(bank: any) {
+        await DiscountService.deleteDiscountsByBank(bank.name);
+        const scraper = new Scraper(bank);
+        scraper.scrapingDiscounts();
     }
 
     public async scrap(bank: IBank, bankCategory: IBankCategory): Promise<IDiscount[]> {        

@@ -54,8 +54,8 @@ export class DiscountService {
         return newDiscountResponse;
     }
 
-    public static async deleteDiscounts() {
-        console.log("🗑️  Deleting all discounts from database...");
-        return await Discount.deleteMany();
+    public static async deleteDiscountsByBank(bankName: string) {
+        console.log("🗑️  Deleting all " + bankName + "'s discounts from database...");
+        return await Discount.deleteMany({ bank: bankName });
     }
 }
