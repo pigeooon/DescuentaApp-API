@@ -33,17 +33,12 @@ app.use('/', router);
 
 //server
 const options = {
-    key: fs.readFileSync("private.key"),
-    cert: fs.readFileSync("certificate.crt"),
-    ca: fs.readFileSync("ca_bundle.crt"),
+    key: fs.readFileSync("private.key").toString(),
+    cert: fs.readFileSync("certificate.crt").toString(),
+    ca: fs.readFileSync("ca_bundle.crt").toString(),
 };
 
 const server = https.createServer(options, app).listen(app.get("port"), "170.239.85.243", () => {
     const { port, address } = server.address() as AddressInfo;
     console.log("\n✅ DESCUENTA-APP API | Listening on:", "https://" + address + ":" + port + " |")
 });
-
-/*const server = app.listen(app.get("port"), "127.0.0.1", () => {
-    const { port, address } = server.address() as AddressInfo;
-    console.log("\n✅ DESCUENTA-APP API | Listening on:", "http://" + address + ":" + port + " |")
-});*/
