@@ -133,7 +133,7 @@ Responses:
 - OK (200): Si existen descuentos destacados, devuelve todas las instancias.
 ```
 
-- `GET api/discounts/filter`: Consulta filtrada de descuentos.
+- `POST api/discounts/filter`: Consulta filtrada de descuentos.
 ```
 Requests: 
 - headers: { }
