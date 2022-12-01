@@ -1,6 +1,15 @@
 export const cards = 
 [
-    "Crédito",
-    "Débito",
-    "Prepago",
+    {
+        dictionary: "Crédito",
+        card: "Crédito"
+    },
+    {
+        dictionary: "Débito",
+        card: "Débito"
+    },
+    {
+        dictionary: "Prepago",
+        card: "Prepago"
+    }
 ];
