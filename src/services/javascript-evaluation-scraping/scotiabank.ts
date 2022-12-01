@@ -7,7 +7,7 @@ import { extractLocationFromString } from "../../utils/location-extractor";
 import { extractPercentageFromString } from "../../utils/percentage-extractor";
 
 const bank = {
-    name: "Scotiabank",
+    name: "Banco Scotiabank",
     url: "https://www.scotiaclub.cl/scclubfront/categoria/mundos/descuentos",
     evaluate: "descuentos",
     img_base_url: "https://www.scotiaclub.cl",

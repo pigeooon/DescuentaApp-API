@@ -7,7 +7,7 @@ import { extractLocationFromString } from "../../utils/location-extractor";
 import { extractPercentageFromString } from "../../utils/percentage-extractor";
 
 const bank = {
-    name: "Falabella",
+    name: "Banco Falabella",
     url: "https://www.bancofalabella.cl/descuentos",
     evaluate: "window.sessionStorage.getItem('benefits')",
     img_base_url: "https://www.scotiaclub.cl",

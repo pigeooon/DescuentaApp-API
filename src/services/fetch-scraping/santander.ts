@@ -7,7 +7,7 @@ import { extractLocationFromString } from "../../utils/location-extractor";
 import { extractPercentageFromString } from "../../utils/percentage-extractor";
 
 const bank = {
-    name: "Santander",
+    name: "Banco Santander",
     url: "https://banco.santander.cl/beneficios/promociones.json?per_page=1000&custom_fields=true&order_by=updated_at&desc=true",
 };
 
