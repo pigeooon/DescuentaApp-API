@@ -61,6 +61,8 @@ export const fetchSantanderDiscounts = async () => {
 
             cardsArray = extractCardsFromString(HTMLDecoderEncoder.decode(discount.description || ""));
             if(!cardsArray.length) cardsArray = extractCardsFromString(HTMLDecoderEncoder.decode(discount.custom_fields["Bajada externa"].value || ""));
+            if(!cardsArray.length) cardsArray = extractCardsFromString(HTMLDecoderEncoder.decode(discount.conditions.value || ""));
+            if(!cardsArray.length) cardsArray = extractCardsFromString(HTMLDecoderEncoder.decode(discount.description.value || ""));
 
             discountsArray.push({
                 name: discount.title,
