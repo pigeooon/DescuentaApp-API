@@ -7,5 +7,8 @@ export const extractCardsFromString = (description: string) => {
             selectedCards.push(cards[i].card);
         }
     }
+    if(selectedCards.length == 0) {
+        selectedCards = ["Crédito", "Débito"];
+    }
     return selectedCards;
 }
