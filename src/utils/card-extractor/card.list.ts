@@ -13,6 +13,10 @@ export const cards =
         card: "Crédito"
     },
     {
+        dictionary: "Tarjeta CMR",
+        card: "Crédito"
+    },
+    {
         dictionary: "debit",
         card: "Débito"
     },
