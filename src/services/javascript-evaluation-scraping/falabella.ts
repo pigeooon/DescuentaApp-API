@@ -2,6 +2,7 @@ import puppeteer, { Browser, Page } from "puppeteer";
 import { IDiscount } from "../../interfaces/discount.interface";
 import { extractCardsFromString } from "../../utils/card-extractor";
 import { extractDateFromString } from "../../utils/date-extractor";
+import { generateSlug } from "../../utils/generateSlug";
 const HTMLDecoderEncoder = require("html-encoder-decoder");
 import { extractLocationFromString } from "../../utils/location-extractor";
 import { extractPercentageFromString } from "../../utils/percentage-extractor";
@@ -90,6 +91,7 @@ export const evaluateFalabellaJavascript = async () => {
             if(discount.fields.fechaTerminoV2 >= new Date().toISOString()) {
                 discountsArray.push({
                     name: discount.fields.tituloCajaV2,
+                    slug: generateSlug(bank.name, discount.fields.tituloCajaV2),
                     img_url: imageString || "",
                     description: discount.fields.subtituloCajaV2,
                     details: HTMLDecoderEncoder.decode(

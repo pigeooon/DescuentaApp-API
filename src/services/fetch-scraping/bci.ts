@@ -3,6 +3,7 @@ const HTMLDecoderEncoder = require("html-encoder-decoder");
 import { IDiscount } from "../../interfaces/discount.interface";
 import { extractCardsFromString } from "../../utils/card-extractor";
 import { extractDateFromString } from "../../utils/date-extractor";
+import { generateSlug } from "../../utils/generateSlug";
 import { extractLocationFromString } from "../../utils/location-extractor";
 import { extractPercentageFromString } from "../../utils/percentage-extractor";
 
@@ -72,6 +73,7 @@ export const fetchBCIDiscounts = async () => {
 
                 discountsArray.push({
                     name: discount.meta.name,
+                    slug: generateSlug(bank.name, discount.meta.name),
                     img_url: imageString || "",
                     description: discount.fields["Bajada texto"],
                     details: HTMLDecoderEncoder.decode(

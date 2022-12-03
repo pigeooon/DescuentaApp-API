@@ -5,6 +5,7 @@ import { IDiscount } from "../../interfaces/discount.interface";
 
 import { extractCardsFromString } from "../../utils/card-extractor";
 import { extractDateFromString } from "../../utils/date-extractor";
+import { generateSlug } from "../../utils/generateSlug";
 import { extractLocationFromString } from "../../utils/location-extractor";
 import { extractPercentageFromString } from "../../utils/percentage-extractor";
 import { removeExtraCharacters } from "../../utils/removeExtraCharacters";
@@ -70,6 +71,7 @@ export const scrapSinglePageApp = async (bank: IBank, bankCategory: IBankCategor
 
         discountsArray.push({
             name: removeExtraCharacters(discounts_name_vector[index]),
+            slug: generateSlug(bank.name, removeExtraCharacters(discounts_name_vector[index])),
             img_url: discounts_img_vector[index],
             description: removeExtraCharacters(discounts_description_vector[index]),
             details: detailsString || undefined,

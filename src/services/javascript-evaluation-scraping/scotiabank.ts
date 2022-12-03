@@ -2,6 +2,7 @@ import puppeteer, { Browser, Page } from "puppeteer";
 import { IDiscount } from "../../interfaces/discount.interface";
 import { extractCardsFromString } from "../../utils/card-extractor";
 import { extractDateFromString } from "../../utils/date-extractor";
+import { generateSlug } from "../../utils/generateSlug";
 const HTMLDecoderEncoder = require("html-encoder-decoder");
 import { extractLocationFromString } from "../../utils/location-extractor";
 import { extractPercentageFromString } from "../../utils/percentage-extractor";
@@ -86,6 +87,7 @@ export const evaluateScotiabankJavascript = async () => {
 
             discountsArray.push({
                 name: discount.titulo,
+                slug: generateSlug(bank.name, discount.titulo),
                 img_url: imageString,
                 description: discount.descuento,
                 details: HTMLDecoderEncoder.decode(discount.direcciones + discount.acceder + discount.condicionesComercio + discount.direcciones + discount.terminosYCondiciones),
