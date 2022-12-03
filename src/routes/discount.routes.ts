@@ -8,6 +8,7 @@ router.get(`${prefix}`, discountController.getDiscounts);
 router.get(`${prefix}/featured`, discountController.getFeaturedDiscounts);
 router.get(`${prefix}/categories`, discountController.getDiscountCategories);
 router.post(`${prefix}/filter`, discountController.getFilteredDiscounts);
+router.get(`${prefix}/:slug/slug`, discountController.getDiscountBySlug);
 router.get(`${prefix}/:id`, discountController.getDiscountById);
 
 export default router;

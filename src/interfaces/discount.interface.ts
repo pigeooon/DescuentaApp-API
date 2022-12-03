@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 export interface IDiscount {
     name: string;
+    slug: string;
     img_url: string;
     description: string;
     details?: string;
@@ -15,6 +16,7 @@ export interface IDiscount {
 
 export type DiscountDocument = mongoose.Document & {
     name: string;
+    slug: string;
     img_url: string;
     description: string;
     details?: string;

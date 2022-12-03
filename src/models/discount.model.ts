@@ -4,6 +4,7 @@ import { DiscountDocument } from "../interfaces/discount.interface";
 const discountSchema = new mongoose.Schema<DiscountDocument> (
     {
         name: String,
+        slug: String,
         img_url: String,
         description: String,
         details: {type: String, required: false},

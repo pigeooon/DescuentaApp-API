@@ -17,6 +17,11 @@ export class DiscountService {
         return singleDiscount;
     }
 
+    public static async getDiscountBySlug(discountSlug: any) {
+        const singleDiscount = await Discount.findOne({slug: discountSlug}).lean();
+        return singleDiscount;
+    }
+
     public static async getFilteredDiscounts(filters: IDiscountFilters) {
         const filtersData = {
             name: filters.name ? filters.name : undefined,
