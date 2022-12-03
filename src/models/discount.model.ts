@@ -13,6 +13,11 @@ const discountSchema = new mongoose.Schema<DiscountDocument> (
         percentage: {type: String, required: false},
         date: {type: String, required: false},
         cards: [],
+    },
+    {
+        timestamps: { 
+            createdAt : "createdAt",
+        }
     }
 );
 
