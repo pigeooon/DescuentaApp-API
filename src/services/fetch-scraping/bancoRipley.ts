@@ -90,7 +90,8 @@ export const fetchRipleyDiscounts = async () => {
                     description: descriptionString || "",
                     details: HTMLDecoderEncoder.decode(
                         (
-                            (discount.params.txtDetalle.value? ("<p>" + discount.params.txtDetalle.value + "</p>") : ""))
+                            (discount.params.txtDetalle.value? ("<p>" + discount.params.txtDetalle.value + "</p>") : "") +
+                            (discount.params.txtLegal.value? ("<p>" + discount.params.txtLegal.value + "</p>") : ""))
                             || ""
                         ),
                     location: locationString || undefined,
