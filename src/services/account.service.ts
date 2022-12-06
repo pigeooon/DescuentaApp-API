@@ -36,6 +36,16 @@ class AccountService {
             throw err;
         }   
     }
+
+    async updateAccount(userEmail: string, preferences: any) {
+        try {
+            const updateUserResponse = await Account.updateOne({email: userEmail}, {preferences: preferences});
+            return updateUserResponse;
+        }
+        catch (err) {
+            throw err;
+        }   
+    }
 }
 
 export const accountService = new AccountService();
