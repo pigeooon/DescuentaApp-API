@@ -1,7 +1,7 @@
 import puppeteer, { Browser, Page } from "puppeteer";
 import { IDiscount } from "../../interfaces/discount.interface";
 import { extractCardsFromString } from "../../utils/card-extractor";
-import { extractDateFromString } from "../../utils/date-extractor";
+import { defaultDays, extractDateFromString } from "../../utils/date-extractor";
 import { generateSlug } from "../../utils/generateSlug";
 const HTMLDecoderEncoder = require("html-encoder-decoder");
 import { extractLocationFromString } from "../../utils/location-extractor";
@@ -57,7 +57,7 @@ export const evaluateFalabellaJavascript = async () => {
         let imageString: string | null = "";
         let percentageString: string | null = "";
         let locationString: string | null = "";
-        let dateString: string | null = "";
+        let dateArray: string[];
         let cardsArray = [];
 
         discounts.map((discount: any) => {
@@ -80,9 +80,9 @@ export const evaluateFalabellaJavascript = async () => {
             if(!locationString) locationString = extractLocationFromString(HTMLDecoderEncoder.decode(discount.fields.textoDetalleLia || ""));
             if(locationString === "") locationString = null;
 
-            dateString = extractDateFromString(HTMLDecoderEncoder.decode(discount.fields.diasCajaV2 || ""));
-            if(!dateString) locationString = extractDateFromString(HTMLDecoderEncoder.decode(discount.fields.subtituloCajaV2 || ""));
-            if(dateString === "") locationString = null;
+            dateArray = extractDateFromString(HTMLDecoderEncoder.decode(discount.fields.diasCajaV2 || ""));
+            if(!dateArray.length) dateArray = extractDateFromString(HTMLDecoderEncoder.decode(discount.fields.subtituloCajaV2 || ""));
+            if(!dateArray.length) dateArray = defaultDays;
 
             cardsArray = extractCardsFromString(HTMLDecoderEncoder.decode(discount.fields.textoDetalleLia || ""));
             if(!cardsArray.length) cardsArray = extractCardsFromString(HTMLDecoderEncoder.decode(discount.fields.subtituloCajaV2 || ""));
@@ -102,7 +102,7 @@ export const evaluateFalabellaJavascript = async () => {
                             || ""
                         ),
                     location: locationString || undefined,
-                    date: dateString || undefined,
+                    date: dateArray,
                     percentage: percentageString || undefined,
                     cards: cardsArray,
                     bank: bank.name,

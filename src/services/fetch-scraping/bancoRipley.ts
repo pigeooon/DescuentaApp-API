@@ -2,7 +2,7 @@ const fetch = require('node-fetch');
 const HTMLDecoderEncoder = require("html-encoder-decoder");
 import { IDiscount } from "../../interfaces/discount.interface";
 import { extractCardsFromString } from "../../utils/card-extractor";
-import { extractDateFromString } from "../../utils/date-extractor";
+import { defaultDays, extractDateFromString } from "../../utils/date-extractor";
 import { generateSlug } from "../../utils/generateSlug";
 import { extractLocationFromString } from "../../utils/location-extractor";
 import { extractPercentageFromString } from "../../utils/percentage-extractor";
@@ -54,7 +54,7 @@ export const fetchRipleyDiscounts = async () => {
             let descriptionString: string | null = "";
             let percentageString: string | null = "";
             let locationString: string | null = "";
-            let dateString: string | null = "";
+            let dateArray: string[];
             let cardsArray = [];
 
             discounts.data.map((discount: any) => {
@@ -74,10 +74,10 @@ export const fetchRipleyDiscounts = async () => {
                 if(!locationString) locationString = extractLocationFromString(HTMLDecoderEncoder.decode(discount.params.txtDetalle.value || ""));
                 if(locationString === "") locationString = null;
 
-                dateString = extractDateFromString(HTMLDecoderEncoder.decode(discount.params.txtValidezBeneficio.value || ""));
-                if(!dateString) dateString = extractDateFromString(HTMLDecoderEncoder.decode(discount.params.txtSubtitulo.value || ""));
-                if(!dateString) locationString = extractDateFromString(HTMLDecoderEncoder.decode(discount.params.txtDetalle.value || ""));
-                if(dateString === "") locationString = null;
+                dateArray = extractDateFromString(HTMLDecoderEncoder.decode(discount.params.txtValidezBeneficio.value || ""));
+                if(!dateArray.length) dateArray = extractDateFromString(HTMLDecoderEncoder.decode(discount.params.txtSubtitulo.value || ""));
+                if(!dateArray.length) dateArray = extractDateFromString(HTMLDecoderEncoder.decode(discount.params.txtDetalle.value || ""));
+                if(!dateArray.length) dateArray = defaultDays;
 
                 cardsArray = extractCardsFromString(HTMLDecoderEncoder.decode(discount.params.boxRestricciones.boxTarjetas.valueBox || ""));
                 if(!cardsArray.length) cardsArray = extractCardsFromString(HTMLDecoderEncoder.decode(discount.params.txtDetalle.value || ""));
@@ -94,7 +94,7 @@ export const fetchRipleyDiscounts = async () => {
                             || ""
                         ),
                     location: locationString || undefined,
-                    date: dateString || undefined,
+                    date: dateArray,
                     percentage: percentageString || undefined,
                     cards: cardsArray,
                     bank: bank.name,

@@ -2,7 +2,7 @@ const fetch = require('node-fetch');
 const HTMLDecoderEncoder = require("html-encoder-decoder");
 import { IDiscount } from "../../interfaces/discount.interface";
 import { extractCardsFromString } from "../../utils/card-extractor";
-import { extractDateFromString } from "../../utils/date-extractor";
+import { defaultDays, extractDateFromString } from "../../utils/date-extractor";
 import { generateSlug } from "../../utils/generateSlug";
 import { extractLocationFromString } from "../../utils/location-extractor";
 import { extractPercentageFromString } from "../../utils/percentage-extractor";
@@ -41,7 +41,7 @@ export const fetchSantanderDiscounts = async () => {
         let imageString: string | null = "";
         let percentageString: string | null = "";
         let locationString: string | null = "";
-        let dateString: string | null = "";
+        let dateArray: string[];
         let cardsArray = [];
 
         discounts.promociones.map((discount: any) => {
@@ -56,9 +56,9 @@ export const fetchSantanderDiscounts = async () => {
             if(!locationString) locationString = extractLocationFromString(HTMLDecoderEncoder.decode(discount.description || ""));
             if(locationString === "") locationString = null;
 
-            dateString = extractDateFromString(HTMLDecoderEncoder.decode(discount.description || ""));
-            if(!dateString) locationString = extractDateFromString(HTMLDecoderEncoder.decode(discount.custom_fields["Bajada externa"].value || ""));
-            if(dateString === "") locationString = null;
+            dateArray = extractDateFromString(HTMLDecoderEncoder.decode(discount.description || ""));
+            if(!dateArray.length) dateArray = extractDateFromString(HTMLDecoderEncoder.decode(discount.custom_fields["Bajada externa"].value || ""));
+            if(!dateArray.length) dateArray = defaultDays;
 
             cardsArray = extractCardsFromString(HTMLDecoderEncoder.decode(discount.description || ""));
             if(!cardsArray.length) cardsArray = extractCardsFromString(HTMLDecoderEncoder.decode(discount.custom_fields["Bajada externa"].value || ""));
@@ -77,7 +77,7 @@ export const fetchSantanderDiscounts = async () => {
                         || ""
                     ),
                 location: locationString || undefined,
-                date: dateString || undefined,
+                date: dateArray,
                 percentage: percentageString || undefined,
                 cards: cardsArray,
                 bank: bank.name,

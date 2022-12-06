@@ -4,7 +4,7 @@ import { IBank, IBankCategory } from "../../interfaces/bank.interface";
 import { IDiscount } from "../../interfaces/discount.interface";
 
 import { extractCardsFromString } from "../../utils/card-extractor";
-import { extractDateFromString } from "../../utils/date-extractor";
+import { defaultDays, extractDateFromString } from "../../utils/date-extractor";
 import { generateSlug } from "../../utils/generateSlug";
 import { extractLocationFromString } from "../../utils/location-extractor";
 import { extractPercentageFromString } from "../../utils/percentage-extractor";
@@ -47,9 +47,10 @@ export const scrapSinglePageApp = async (bank: IBank, bankCategory: IBankCategor
     //construimos el array de IDiscounts
     let detailsString: string | null = "";
     let locationString: string | null = "";
-    let dateString: string | null = "";
+    let dateArray: string[];
     let percentageString: string | null = "";
     let cardsArray = [];
+
     discounts_name_vector.map((_value, index) => {
         detailsString = removeExtraCharacters(String(discounts_details_vector[index]));
         if(detailsString === "") detailsString = null;
@@ -58,9 +59,9 @@ export const scrapSinglePageApp = async (bank: IBank, bankCategory: IBankCategor
         if(!locationString) locationString = extractLocationFromString(discounts_description_vector[index]);
         if(locationString === "") locationString = null;
 
-        dateString = extractDateFromString(String(discounts_details_vector[index]));
-        if(!dateString) dateString = extractDateFromString(discounts_description_vector[index]);
-        if(dateString === "") dateString = null;
+        dateArray = extractDateFromString(String(discounts_details_vector[index]));
+        if(!dateArray.length) dateArray = extractDateFromString(discounts_description_vector[index]);
+        if(!dateArray.length) dateArray = defaultDays;
         
         percentageString = extractPercentageFromString(String(discounts_details_vector[index]));
         if(!percentageString) percentageString = extractPercentageFromString(discounts_description_vector[index]);
@@ -76,7 +77,7 @@ export const scrapSinglePageApp = async (bank: IBank, bankCategory: IBankCategor
             description: removeExtraCharacters(discounts_description_vector[index]),
             details: detailsString || undefined,
             location: locationString || undefined,
-            date: dateString || undefined,
+            date: dateArray,
             percentage: percentageString || undefined,
             cards: cardsArray,
             bank: bank.name,

@@ -1,7 +1,7 @@
 import puppeteer, { Browser, Page } from "puppeteer";
 import { IDiscount } from "../../interfaces/discount.interface";
 import { extractCardsFromString } from "../../utils/card-extractor";
-import { extractDateFromString } from "../../utils/date-extractor";
+import { defaultDays, extractDateFromString } from "../../utils/date-extractor";
 import { generateSlug } from "../../utils/generateSlug";
 const HTMLDecoderEncoder = require("html-encoder-decoder");
 import { extractLocationFromString } from "../../utils/location-extractor";
@@ -66,7 +66,7 @@ export const evaluateScotiabankJavascript = async () => {
         
         let imageString: string | null = "";
         let locationString: string | null = "";
-        let dateString: string | null = "";
+        let dateArray: string[];
         let cardsArray = [];
 
         result.map((discount: any) => {
@@ -76,9 +76,10 @@ export const evaluateScotiabankJavascript = async () => {
             if(!locationString) locationString = extractLocationFromString(HTMLDecoderEncoder.decode(discount.descripcion));
             if(locationString === "") locationString = null;
 
-            dateString = extractDateFromString(HTMLDecoderEncoder.decode(discount.acceder));
-            if(!dateString) locationString = extractDateFromString(HTMLDecoderEncoder.decode(discount.descripcion));
-            if(dateString === "") locationString = null;
+            dateArray = extractDateFromString(HTMLDecoderEncoder.decode(discount.acceder));
+            if(!dateArray.length) dateArray = extractDateFromString(HTMLDecoderEncoder.decode(discount.descripcion));
+            if(!dateArray.length) dateArray = defaultDays;
+            
 
             cardsArray = extractCardsFromString(HTMLDecoderEncoder.decode(discount.direcciones));
             if(!cardsArray.length) cardsArray = extractCardsFromString(HTMLDecoderEncoder.decode(discount.acceder));
@@ -92,7 +93,7 @@ export const evaluateScotiabankJavascript = async () => {
                 description: discount.descuento,
                 details: HTMLDecoderEncoder.decode(discount.direcciones + discount.acceder + discount.condicionesComercio + discount.direcciones + discount.terminosYCondiciones),
                 location: locationString || undefined,
-                date: dateString || undefined,
+                date: dateArray,
                 percentage: extractPercentageFromString(discount.descuento),
                 cards: cardsArray,
                 bank: bank.name,

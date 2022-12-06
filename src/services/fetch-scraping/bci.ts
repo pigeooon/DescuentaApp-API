@@ -2,7 +2,7 @@ const fetch = require('node-fetch');
 const HTMLDecoderEncoder = require("html-encoder-decoder");
 import { IDiscount } from "../../interfaces/discount.interface";
 import { extractCardsFromString } from "../../utils/card-extractor";
-import { extractDateFromString } from "../../utils/date-extractor";
+import { defaultDays, extractDateFromString } from "../../utils/date-extractor";
 import { generateSlug } from "../../utils/generateSlug";
 import { extractLocationFromString } from "../../utils/location-extractor";
 import { extractPercentageFromString } from "../../utils/percentage-extractor";
@@ -48,7 +48,7 @@ export const fetchBCIDiscounts = async () => {
             let imageString: string | null = "";
             let percentageString: string | null = "";
             let locationString: string | null = "";
-            let dateString: string | null = "";
+            let dateArray: string[];
             let cardsArray = [];
 
             discounts.entries.map((discount: any) => {
@@ -64,9 +64,9 @@ export const fetchBCIDiscounts = async () => {
                 if(!locationString) locationString = extractLocationFromString(HTMLDecoderEncoder.decode(discount.fields["Descripción"] || ""));
                 if(locationString === "") locationString = null;
 
-                dateString = extractDateFromString(HTMLDecoderEncoder.decode(discount.fields["Descripción"] || ""));
-                if(!dateString) locationString = extractDateFromString(HTMLDecoderEncoder.decode(discount.fields["Bajada texto"] || ""));
-                if(dateString === "") locationString = null;
+                dateArray = extractDateFromString(HTMLDecoderEncoder.decode(discount.fields["Descripción"] || ""));
+                if(!dateArray.length) dateArray = extractDateFromString(HTMLDecoderEncoder.decode(discount.fields["Bajada texto"] || ""));
+                if(!dateArray.length) dateArray = defaultDays;
 
                 cardsArray = extractCardsFromString(HTMLDecoderEncoder.decode(discount.fields["Descripción"] || ""));
                 if(!cardsArray.length) cardsArray = extractCardsFromString(HTMLDecoderEncoder.decode(discount.fields["Bajada texto"] || ""));
@@ -83,7 +83,7 @@ export const fetchBCIDiscounts = async () => {
                             || ""
                         ),
                     location: locationString || undefined,
-                    date: dateString || undefined,
+                    date: dateArray,
                     percentage: percentageString || undefined,
                     cards: cardsArray,
                     bank: bank.name,
