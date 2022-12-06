@@ -80,6 +80,18 @@ Responses:
 - OK (200): Si el token es válido, incluye { _id:string, name:string, email:string, administrator:boolean }.
 ```
 
+- `PATCH api/account`: Actualiza una cuenta.
+```
+Requests: 
+- headers: { headers.authorization }
+- body: { preferences: [] }
+
+Responses:
+- UNAUTHORIZED (401): Si token no viene incluido en headers.authorization.
+- UNAUTHORIZED (401): Si token es invalido.
+- OK (200): Si la actualización fue satisfactoria.
+```
+
 ### 🎟️ Discounts
 
 #### Discount interface
