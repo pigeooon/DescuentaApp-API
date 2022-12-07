@@ -80,8 +80,8 @@ export const evaluateFalabellaJavascript = async () => {
             if(!locationString) locationString = extractLocationFromString(HTMLDecoderEncoder.decode(discount.fields.textoDetalleLia || ""));
             if(locationString === "") locationString = null;
 
-            dateArray = extractDateFromString(HTMLDecoderEncoder.decode(discount.fields.diasCajaV2 || ""));
-            if(!dateArray.length) dateArray = extractDateFromString(HTMLDecoderEncoder.decode(discount.fields.subtituloCajaV2 || ""));
+            dateArray = discount.fields.diasDescuento || [];
+            if(!dateArray.length) dateArray = extractDateFromString(HTMLDecoderEncoder.decode(discount.fields.diasCajaV2 || ""));
             if(!dateArray.length) dateArray = defaultDays;
 
             cardsArray = extractCardsFromString(HTMLDecoderEncoder.decode(discount.fields.textoDetalleLia || ""));
