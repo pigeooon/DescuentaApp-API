@@ -36,7 +36,7 @@ export class DiscountService {
             ...(filtersData.categories && {category:  {"$in" : filtersData.categories}}),
             ...(filtersData.banks && {bank:  {"$in" : filtersData.banks}}),
             ...(filtersData.cards && {cards:  {"$in" : filtersData.cards}}),
-            ...(filtersData.dates && {date:  {"$elemMatch" : filtersData.dates}}),
+            ...(filtersData.dates && {date:  {"$all" : filtersData.dates}}),
             ...(filtersData.locations && {location:  {"$in" : filtersData.locations}}),
         }
         const filteredDiscounts = await Discount.find(mongoFilters).lean();
